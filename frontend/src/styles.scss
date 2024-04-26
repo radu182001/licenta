@@ -1,0 +1,106 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+    --clr-background: #E0E0E0;
+    --clr-light: #FFFFFF;
+    --clr-dark: #B9B9B9;
+    --clr-primary: #FF7F50;
+    --clr-secondary: #1E3A5F;
+
+    --font-tiny: 0.8rem;
+    --font-small: 1.1rem;
+    --font-medium: 1.3rem;
+    --font-big: 1.6rem;
+    --font-large: 1.8rem;
+
+    color: var(--clr-secondary);
+    background-color: var(--clr-background);
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+h1, h2, h3, h4 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    width: 100%;
+    border-radius: 2rem;
+    padding: 2rem;
+    background-color: var(--clr-light);
+    box-sizing: border-box;
+    min-height: fit-content;
+
+    h1, h2, h3, h4 {
+        color: var(--clr-secondary);
+        text-align: center;
+    }
+
+    animation: spawn 100ms forwards;
+}
+
+.default-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    padding: 6rem clamp(3.5rem, 12vw, 17rem);
+    box-sizing: border-box;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.title-with-icon {
+    display: flex;
+
+    h2 {
+        font-size: var(--font-big);
+        align-self: center;
+    }
+
+    mat-icon {
+        cursor: pointer;
+        color: var(--clr-secondary);
+        font-size: var(--font-medium);
+        text-align: center;
+        align-self: center;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    :root {
+        --font-tiny: 0.7rem;
+        --font-small: 0.9rem;
+        --font-medium: 1.1rem;
+        --font-big: 1.45rem;
+        --font-large: 1.75rem;
+    }
+}
+
+@keyframes spawn {
+    from, to { transform: scale(1, 1); }
+    25% { transform: scale(1.02, 1.02); }
+}

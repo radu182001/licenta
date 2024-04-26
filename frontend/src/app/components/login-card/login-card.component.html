@@ -1,0 +1,9 @@
+<div class="card-container">
+  <div class="palceholder"></div>
+  <div *ngIf="login">
+    <app-login-form (changeForm)="change()"></app-login-form>
+  </div>
+  <div *ngIf="!login">
+    <app-register-form (changeForm)="change()"></app-register-form>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<h1>Login</h1>
+<div class="input-container">
+  <h2>Username</h2>
+  <div class="field-container">
+    <mat-icon class="icon">person_outline</mat-icon>
+    <mat-divider [vertical]="true" class="divider"></mat-divider>
+    <input
+      [(ngModel)]="username"
+      type="text"
+      class="field"
+      placeholder="Username"
+    />
+  </div>
+</div>
+<div class="input-container">
+  <h2>Password</h2>
+  <div class="field-container">
+    <mat-icon class="icon">password</mat-icon>
+    <mat-divider [vertical]="true" class="divider"></mat-divider>
+    <input
+      [(ngModel)]="password"
+      class="field"
+      [type]="hide ? 'password' : 'text'"
+      placeholder="Password"
+    />
+    <button
+      mat-icon-button
+      matSuffix
+      (click)="hide = !hide"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide"
+    >
+      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+    </button>
+  </div>
+</div>
+<a class="forgot">Forgot password?</a>
+<button class="submit" (click)="login()">Sign in</button>
+<p>
+  Don't have an account?<span><a (click)="signup()">Sign up</a></span>
+</p>

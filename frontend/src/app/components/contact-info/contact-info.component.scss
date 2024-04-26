@@ -1,0 +1,39 @@
+.card-container {
+    padding: 3rem;
+}
+
+.title-with-icon {
+    h2 {
+        font-size: var(--font-large);
+    }
+    margin-bottom: clamp(0.1rem, 2vh, 3rem);
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: clamp(0.2rem, 1.7vh, 1.5rem);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 0.3rem;
+
+    h2 {
+        font-size: var(--font-big);
+        font-weight: 500;
+        margin-right: 1rem;
+        align-self: flex-start;
+    }
+
+    h3 {
+        font-size: var(--font-medium);
+        font-weight: 400;
+        align-self: flex-start;
+    }
+}

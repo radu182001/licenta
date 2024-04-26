@@ -1,0 +1,11 @@
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--clr-light);
+    width: 60rem;
+    margin: auto;
+    border-radius: 2rem;
+    padding: 8rem 9rem;
+    box-shadow: 0 10px 20px 4px rgba($color: #000000, $alpha: 0.2);
+}

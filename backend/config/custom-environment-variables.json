@@ -1,0 +1,5 @@
+{
+    "jwtPrivateKey": "kulu_jwtPrivateKey",
+    "s3_accessKeyId": "kulu_s3_accessKeyId",
+    "s3_secretAccessKey": "kulu_s3_secretAccessKey"
+}

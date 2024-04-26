@@ -1,0 +1,62 @@
+.card-container {
+    padding: 3rem 8rem;
+    gap: 2rem;
+}
+
+.heading {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-left: 3rem;
+
+    h1 {
+        font-size: var(--font-large);
+        font-weight: 500;
+        align-self: flex-start;
+    }
+
+    h3 {
+        color: var(--clr-primary);
+        font-size: var(--font-medium);
+        align-self: flex-start;
+    }
+}
+
+.profile-img {
+    width: 13rem;
+    aspect-ratio: 1;
+    background-color: var(--clr-dark);
+    border-radius: 50%;
+}
+
+.img-container {
+    position: relative;
+
+    button {
+        position: absolute;
+        bottom: -1rem;
+        right: -1rem;
+        z-index: 1000;
+        font-size: var(--font-tiny);
+        color: var(--clr-secondary);
+        font-family: inherit;
+        font-weight: 500;
+    }
+}
+
+
+
+.description {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}

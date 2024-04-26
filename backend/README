@@ -1,0 +1,8 @@
+TO DO:
+
+- change s3Client keys
+- jwt
+
+#First week
+Added register and authentication endpoints. I hash the password using bcrypt, I validate the body data using Joi, I create the jwt using jsonwebtoken and I use env variables using the config module.
+I also implemented the authorization middleware. It reads the token from the header and if it is valid, it sends it to the request body.

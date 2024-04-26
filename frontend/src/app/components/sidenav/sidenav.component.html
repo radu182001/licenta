@@ -1,0 +1,76 @@
+<mat-drawer-container class="sidenav-container" fullscreen>
+  <mat-drawer
+    #drawer
+    class="sidenav"
+    mode="side"
+    [ngStyle]="{ 'width.rem': sideNavWidth }"
+    opened="true"
+    (mouseenter)="increase()"
+    (mouseleave)="decrease()"
+  >
+    <div class="nav-container">
+      <mat-nav-list class="nav-list">
+        <mat-list-item class="user-list nav-list-item">
+          <a class="list-content">
+            <img
+              [src]="profilePath"
+              alt="profile_picture"
+              class="profile"
+              [ngStyle]="{ 'width.rem': imgSize }"
+            />
+            <div class="user">
+              <h1>{{ fullname }}</h1>
+              <h4 class="subtitle">{{ "@" + username }}</h4>
+            </div>
+          </a>
+        </mat-list-item>
+        <mat-list-item class="nav-list-item">
+          <a class="list-content" [routerLink]="['profile', username]">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </a>
+        </mat-list-item>
+        <mat-list-item class="nav-list-item" (click)="toggleProjects()">
+          <a class="list-content">
+            <mat-icon>folder</mat-icon>
+            <span>Projects</span>
+            <mat-icon class="arrow">{{
+              "keyboard_arrow_" + (showProjects ? "down" : "right")
+            }}</mat-icon>
+          </a>
+        </mat-list-item>
+        <div
+          class="project-list-container"
+          [ngStyle]="{
+            'max-height.rem': showProjects ? projectsMaxHeight : '0'
+          }"
+        >
+          <mat-list-item class="nav-list-item" *ngFor="let p of projects">
+            <a class="list-content">
+              <span>{{ p.name }}</span>
+            </a>
+          </mat-list-item>
+        </div>
+        <mat-list-item class="nav-list-item">
+          <a class="list-content">
+            <mat-icon>chat_bubble</mat-icon>
+            <span>Chat</span>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <mat-nav-list class="nav-list">
+        <mat-list-item class="nav-list-item" (click)="logout()">
+          <a class="list-content">
+            <mat-icon>logout</mat-icon>
+            <span>Logout</span>
+          </a>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

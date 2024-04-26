@@ -1,0 +1,44 @@
+.card-container {
+    gap: 2.8rem;
+}
+
+.projects-heading {
+    font-size: var(--font-large);
+    font-weight: 500;
+}
+
+.project-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+
+    .cell {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.3rem;
+        width: 100%;
+        height: 100%;
+
+        h2 {
+            font-size: var(--font-big);
+            margin-bottom: 10rem;
+            font-weight: 400;
+        }
+
+        h3 {
+            font-size: var(--font-big);
+            color: var(--clr-primary);
+            font-weight: 400;
+        }
+    }
+
+    .divider {
+        height: 70%;
+        width: 0.1rem;
+        background-color: var(--clr-dark);
+    }
+}

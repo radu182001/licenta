@@ -1,0 +1,14 @@
+<div class="card-container">
+  <div class="title-with-icon">
+    <h2>Contact info</h2>
+    <button mat-icon-button>
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
+  <div class="info-container">
+    <div class="info" *ngFor="let elem of info">
+      <h2>{{ elem.title }}:</h2>
+      <h3>{{ elem.value }}</h3>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+:host {
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+}
+
+.new-project-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    box-shadow: 0 3px 10px rgba($color: #000000, $alpha: 0.4) !important;
+    background-color: var(--clr-secondary);
+}
+
+@media screen and (max-width: 600px) {
+    .new-project-btn {
+        padding: 0 0.725rem;
+
+        mat-icon {
+            margin: 0;
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+}
