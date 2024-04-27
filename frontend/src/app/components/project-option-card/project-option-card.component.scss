@@ -1,0 +1,24 @@
+.card-container {
+    width: 15rem;
+    height: 15rem;
+
+    mat-icon{
+        font-size: 4rem;
+        width: fit-content;
+        height: fit-content;
+        align-self: center;
+        text-align: center;
+        color: var(--clr-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    h1 {
+        font-size: var(--font-large);
+        font-weight: 500;
+    }
+}
+
+// .card-container:hover {
+//     cursor: pointer;
+//     transform: scale(1.2);
+// }

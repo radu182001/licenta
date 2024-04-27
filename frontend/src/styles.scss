@@ -12,6 +12,7 @@
     --font-medium: 1.3rem;
     --font-big: 1.6rem;
     --font-large: 1.8rem;
+    --font-extralarge: 3rem;
 
     color: var(--clr-secondary);
     background-color: var(--clr-background);
@@ -39,7 +40,7 @@ img {
     gap: 1rem;
     height: 100%;
     width: 100%;
-    border-radius: 2rem;
+    border-radius: 1.8rem;
     padding: 2rem;
     background-color: var(--clr-light);
     box-sizing: border-box;

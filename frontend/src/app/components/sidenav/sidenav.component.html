@@ -46,7 +46,7 @@
           }"
         >
           <mat-list-item class="nav-list-item" *ngFor="let p of projects">
-            <a class="list-content">
+            <a class="list-content" [routerLink]="['project', p.id, p.name]">
               <span>{{ p.name }}</span>
             </a>
           </mat-list-item>

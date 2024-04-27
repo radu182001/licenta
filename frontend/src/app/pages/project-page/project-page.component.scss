@@ -1,0 +1,27 @@
+.options-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 3rem;
+    width: 100%;
+}
+
+.options-wrapper > * {
+    transition: transform 100ms ease-in;
+}
+
+.options-wrapper > *:hover {
+    cursor: pointer;
+    transform: scale(1.07);
+}
+
+.default-page {
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.project-title {
+    align-self: flex-start;
+    font-size: var(--font-extralarge);
+    font-weight: 500;
+    color: var(--clr-secondary);
+}
