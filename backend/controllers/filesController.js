@@ -1,25 +1,66 @@
 const pool = require("../database/db");
-const queries = require("../queries/chatQueries");
+const queries = require("../queries/fileQueries");
+const userQueries = require("../queries/userQueries");
 const validate = require("../utils/validation");
 const {
   GetObjectCommand,
   ListObjectsV2Command,
+  DeleteObjectCommand,
 } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const s3Client = require("../database/s3Client");
+const values = require("../utils/values");
 
 const uploadFile = async (req, res) => {
   if (req.file) {
-    // The file has been uploaded and handled by Multer and multerS3
-    res.send(`Uploaded successfully at ${req.file.key}!`);
+    const name = req.file.originalname.slice(
+      0,
+      req.file.originalname.lastIndexOf(".")
+    );
+    const size = req.file.size;
+    const format = req.file.mimetype;
+    const key = req.file.key;
+
+    console.log(name, size, format, key);
+
+    try {
+      const result = await pool.query(
+        queries.uploadFile(
+          name,
+          size,
+          format,
+          req.user.id,
+          req.params.projectID,
+          key
+        )
+      );
+
+      const username = await pool.query(userQueries.getUsername(req.user.id));
+
+      res.status(201).send({
+        body: { ...result.rows[0], username: username.rows[0].username },
+      });
+    } catch (error) {
+      return res.status(500).send({ error: error });
+    }
   } else {
     // No file was uploaded
-    res.status(400).send("No file was uploaded.");
+    res.status(400).send({ error: "No file was uploaded." });
+  }
+};
+
+const getProjectFilesList = async (req, res) => {
+  try {
+    const result = await pool.query(queries.getFiles(req.params.id));
+
+    res.status(200).send({ body: result.rows });
+  } catch (error) {
+    return res.status(500).send({ error: error });
   }
 };
 
 const getProfilePicture = async (req, res) => {
-  const bucketName = "kulubucket";
+  const bucketName = values.bucketname;
 
   try {
     const listParams = {
@@ -52,8 +93,10 @@ const getProfilePicture = async (req, res) => {
 };
 
 const getFile = async (req, res) => {
-  const bucketName = "kulubucket";
-  const key = req.body.key;
+  const bucketName = values.bucketname;
+  const key = [req.params.userID, req.params.projectID, req.params.file].join(
+    "/"
+  );
 
   try {
     const command = new GetObjectCommand({
@@ -71,8 +114,30 @@ const getFile = async (req, res) => {
   }
 };
 
+const deleteFile = async (req, res) => {
+  const bucketName = values.bucketname;
+  const key = [req.params.userID, req.params.projectID, req.params.file].join(
+    "/"
+  );
+
+  const deleteCommand = new DeleteObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+
+  try {
+    const data = await s3Client.send(deleteCommand);
+    await pool.query(queries.deleteFile(key));
+    return res.status(200).send({ msg: "File deleted successfully!" });
+  } catch (error) {
+    res.status(500).send({ error: "Error deleting file" });
+  }
+};
+
 module.exports = {
   uploadFile,
   getProfilePicture,
   getFile,
+  getProjectFilesList,
+  deleteFile,
 };

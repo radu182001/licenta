@@ -1,0 +1,27 @@
+<div class="card-container">
+  <mat-checkbox></mat-checkbox>
+  <mat-icon>insert_drive_file</mat-icon>
+  <div class="file-info">
+    <h2>{{ name }}</h2>
+    <h3>{{ size + " " + format }}</h3>
+  </div>
+  <h2 class="user">{{ "@" + user }}</h2>
+  <h2 class="date">{{ date }}</h2>
+  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="File options">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>edit</mat-icon>
+      <span>Rename</span>
+    </button>
+    <button mat-menu-item (click)="download.emit()">
+      <mat-icon>get_app</mat-icon>
+      <span>Download</span>
+    </button>
+    <button mat-menu-item (click)="delete.emit()">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+  </mat-menu>
+</div>

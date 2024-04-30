@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-option-card',
@@ -11,4 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 export class ProjectOptionCardComponent {
   @Input('icon') icon: string = "";
   @Input('title') title: string = "";
+  @Input('path') path: string = ""
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  navigate() {
+    if (this.path)
+      this.router.navigate([this.path], { relativeTo: this.route.parent })
+  }
 }

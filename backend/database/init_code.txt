@@ -21,8 +21,19 @@ CREATE TABLE Projects (
 CREATE TABLE UserProjects (
     UserID INT REFERENCES Users(ID),
     ProjectID INT REFERENCES Projects(ID),
-    Role VARCHAR(20),
+    Role VARCHAR(20) NOT NULL,
     PRIMARY KEY (UserID, ProjectID)
+);
+
+CREATE TABLE File (
+    ID SERIAL PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Key VARCHAR(255) NOT NULL,
+    Size INT NOT NULL,
+    Format VARCHAR(50) NOT NULL,
+    UserID INT NOT NULL REFERENCES Users(ID),
+    ProjectID INT REFERENCES Projects(ID),
+    Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Conversations (

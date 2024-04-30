@@ -1,25 +1,4 @@
 <div class="default-page">
-  <h1 class="project-title">Project title</h1>
-  <div class="options-wrapper">
-    <app-project-option-card
-      icon="library_books"
-      title="Write lyrics"
-    ></app-project-option-card>
-    <app-project-option-card
-      icon="insert_drive_file"
-      title="Files"
-    ></app-project-option-card>
-    <app-project-option-card
-      icon="people"
-      title="Group chat"
-    ></app-project-option-card>
-    <app-project-option-card
-      icon="music_note"
-      title="Arrange"
-    ></app-project-option-card>
-    <app-project-option-card
-      icon="settings"
-      title="Settings"
-    ></app-project-option-card>
-  </div>
+  <h1 class="project-title">{{ projectName }}</h1>
+  <router-outlet></router-outlet>
 </div>

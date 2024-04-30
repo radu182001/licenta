@@ -1,0 +1,31 @@
+<button
+  mat-flat-button
+  color="primary"
+  class="uploadBtn"
+  (click)="fileInput.click()"
+>
+  Upload file
+</button>
+<input
+  type="file"
+  #fileInput
+  style="display: none"
+  (change)="uploadFile($event)"
+/>
+<div class="card-container">
+  <mat-checkbox></mat-checkbox>
+  <h2>File name</h2>
+  <h2 class="created-by">Created by</h2>
+  <h2 class="last-modified">Last modified</h2>
+</div>
+<app-file
+  *ngFor="let file of files"
+  [name]="file.name"
+  [size]="file.size"
+  [format]="file.format"
+  [user]="file.username"
+  [date]="file.timestamp"
+  (delete)="deleteFile(file.key)"
+  (download)="downloadFile(file.key)"
+></app-file>
+<p *ngIf="!files.length">No files uploaded</p>

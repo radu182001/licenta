@@ -25,7 +25,7 @@ export class WebRequestService {
     return this.http.put(this.ROOT_URL + url, payload, {headers});
   }
 
-  delete(url: string, payload: Object) {
+  delete(url: string, payload?: Object) {
     return this.http.delete(this.ROOT_URL + url, payload);
   }
 }

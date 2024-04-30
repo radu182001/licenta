@@ -6,13 +6,20 @@ const uploadFile = multer({
   storage: multerS3({
     s3: s3Client,
     bucket: "kulubucket",
+    contentLength: 5000000000000000000,
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      cb(null, `${req.user.id}/${Date.now().toString()}-${file.originalname}`);
+      cb(
+        null,
+        `${req.user.id}/${req.params.projectID}/${Date.now().toString()}-${
+          file.originalname
+        }`
+      );
     },
   }),
+  limits: { fileSize: 1000000000000 },
 });
 
 const uploadProfilePicture = multer({

@@ -3,6 +3,8 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { ProjectPageComponent } from './pages/project-page/project-page.component';
+import { ProjectFilesPageComponent } from './pages/project-files-page/project-files-page.component';
+import { ProjectOptionsPageComponent } from './pages/project-options-page/project-options-page.component';
 
 export const routes: Routes = [
     { path: '',   redirectTo: '/auth', pathMatch: 'full' },
@@ -17,7 +19,18 @@ export const routes: Routes = [
             },
             {
                 path: 'project/:id/:name',
-                component: ProjectPageComponent
+                component: ProjectPageComponent,
+                children: [
+                    //{ path: '',   redirectTo: '/auth', pathMatch: 'full' },
+                    {
+                        path: '',
+                        component: ProjectOptionsPageComponent
+                    },
+                    {
+                        path: 'files',
+                        component: ProjectFilesPageComponent
+                    }
+                ]
             }
         ] 
     },

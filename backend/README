@@ -2,6 +2,9 @@ TO DO:
 
 - change s3Client keys
 - jwt
+- file size bug
+- project role authorization
+- delete warning
 
 #First week
 Added register and authentication endpoints. I hash the password using bcrypt, I validate the body data using Joi, I create the jwt using jsonwebtoken and I use env variables using the config module.
