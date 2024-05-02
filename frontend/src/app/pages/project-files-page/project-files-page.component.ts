@@ -5,12 +5,13 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FileService } from '../../services/file.service';
 import { ActivatedRoute } from '@angular/router';
-import { response } from 'express';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-project-files-page',
   standalone: true,
-  imports: [FileComponent, MatCheckboxModule, CommonModule, MatButtonModule],
+  imports: [FileComponent, MatCheckboxModule, CommonModule, MatButtonModule, MatDialogModule],
   templateUrl: './project-files-page.component.html',
   styleUrl: './project-files-page.component.scss'
 })
@@ -18,7 +19,7 @@ export class ProjectFilesPageComponent implements OnInit{
   projectId: number = 0;
   files: any = [];
 
-  constructor(private fileService: FileService, private route: ActivatedRoute) {}
+  constructor(private fileService: FileService, private route: ActivatedRoute, private dialog: MatDialog) {}
 
   uploadFile(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
@@ -44,6 +45,16 @@ export class ProjectFilesPageComponent implements OnInit{
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    });
+  }
+
+  triggerDelete(key: string) {
+    const dialogRef = this.dialog.open(DeleteDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.deleted) {
+        this.deleteFile(key);
+      }
     });
   }
 

@@ -25,7 +25,7 @@
   [format]="file.format"
   [user]="file.username"
   [date]="file.timestamp"
-  (delete)="deleteFile(file.key)"
+  (delete)="triggerDelete(file.key)"
   (download)="downloadFile(file.key)"
 ></app-file>
 <p *ngIf="!files.length">No files uploaded</p>
