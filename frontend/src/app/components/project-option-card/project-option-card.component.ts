@@ -12,12 +12,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProjectOptionCardComponent {
   @Input('icon') icon: string = "";
   @Input('title') title: string = "";
-  @Input('path') path: string = ""
+  @Input('path') path: string = "";
+  @Input('paging') paging: boolean = false;
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   navigate() {
-    if (this.path)
-      this.router.navigate([this.path], { relativeTo: this.route.parent })
+    if (this.path) {
+      if (this.paging)
+        this.router.navigate([this.path], { relativeTo: this.route.parent, queryParams: {page: 1} });
+      else this.router.navigate([this.path], { relativeTo: this.route.parent });
+    }
   }
 }

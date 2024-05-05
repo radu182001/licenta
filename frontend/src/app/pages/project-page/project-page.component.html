@@ -1,4 +1,8 @@
 <div class="default-page">
-  <h1 class="project-title">{{ projectName }}</h1>
+  <div class="project-title-container">
+    <h1 class="project-title">{{ projectName }}</h1>
+    <h2 class="role">{{ userRole }}</h2>
+  </div>
+  <h3 class="project-description">{{ description }}</h3>
   <router-outlet></router-outlet>
 </div>

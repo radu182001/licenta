@@ -1,11 +1,16 @@
 const pool = require("../database/db");
 const queries = require("../queries/projectQueries");
 const validate = require("../utils/validation");
+const string = require("../utils/string");
 
 const roles = require("../utils/roles");
 
 const createProject = async (req, res) => {
-  const { name, description } = req.body;
+  let { name, description } = req.body;
+
+  name = string.escapeSqlString(name);
+  description = string.escapeSqlString(description);
+  console.log(name);
 
   // validate body
   const { error } = validate.validateProject(req.body);
@@ -74,8 +79,21 @@ const getProjects = async (req, res) => {
   }
 };
 
+const getProject = async (req, res) => {
+  try {
+    const project = await pool.query(
+      queries.getProject(req.params.id, req.user.id)
+    );
+
+    res.status(200).send({ body: project.rows[0] });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
 module.exports = {
   createProject,
   addNewMember,
   getProjects,
+  getProject,
 };

@@ -1,6 +1,7 @@
 .card-container {
     padding: 3rem 8rem;
     gap: 2rem;
+    justify-content: flex-start;
 }
 
 .heading {
@@ -32,7 +33,7 @@
 }
 
 .profile-img {
-    width: 13rem;
+    width: 16rem;
     aspect-ratio: 1;
     background-color: var(--clr-dark);
     border-radius: 50%;

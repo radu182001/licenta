@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="dialog-title">Create new project</h2>
+<mat-dialog-content class="dialog-content">
+  <div class="input-container">
+    <h2 class="required">Project name</h2>
+    <div class="field-container">
+      <mat-icon class="icon">work_outline</mat-icon>
+      <mat-divider [vertical]="true" class="divider"></mat-divider>
+      <input
+        type="text"
+        class="field"
+        placeholder="Project name"
+        [(ngModel)]="name"
+      />
+    </div>
+  </div>
+  <div class="input-container">
+    <h2 class="required">Description</h2>
+    <div class="field-container textarea">
+      <mat-icon class="icon">description</mat-icon>
+      <mat-divider [vertical]="true" class="divider"></mat-divider>
+      <textarea
+        rows="4"
+        class="field"
+        placeholder="Enter description here..."
+        style="resize: none; height: 7rem"
+        [(ngModel)]="desc"
+      ></textarea>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="action-buttons">
+  <button mat-button mat-dialog-close class="close-btn">Close</button>
+  <button
+    mat-button
+    class="create-btn"
+    cdkFocusInitial
+    (click)="createProject()"
+  >
+    Create
+  </button>
+</mat-dialog-actions>

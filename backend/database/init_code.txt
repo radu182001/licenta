@@ -36,6 +36,18 @@ CREATE TABLE File (
     Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE ArrangeFile (
+    ProjectID INT REFERENCES Projects(ID),
+    FileID INT REFERENCES File(ID),
+    PRIMARY KEY (ProjectID, FileID)
+);
+
+CREATE TABLE DawAudio (
+    ID SERIAL PRIMARY KEY,
+    ProjectID INT REFERENCES Projects(ID),
+    FileID INT REFRENCES File(ID),
+);
+
 CREATE TABLE Conversations (
     ID SERIAL PRIMARY KEY,
     Name VARCHAR(255)

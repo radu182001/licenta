@@ -5,9 +5,32 @@
     width: 100%;
 }
 
+.project-title-container {
+    align-self: flex-start;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+
+    .role {
+        align-self: flex-end;
+        margin-left: 2rem !important;
+        color: var(--clr-primary);
+    }
+
+}
+
+.project-description {
+    align-self: flex-start;
+    font-size: var(--font-medium);
+    font-weight: 400;
+    color: var(--clr-secondary);
+}
+
 .project-title {
     align-self: flex-start;
     font-size: var(--font-extralarge);
     font-weight: 500;
     color: var(--clr-secondary);
 }
+

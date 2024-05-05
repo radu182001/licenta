@@ -1,0 +1,41 @@
+<div class="toolbar">
+  <mat-icon class="play-btn" (click)="play()">{{
+    playing ? "pause" : "play_arrow"
+  }}</mat-icon>
+
+  <mat-icon class="record-btn">fiber_manual_record</mat-icon>
+</div>
+<div #timeline class="timeline" (mouseup)="moveMarker($event)">
+  <div class="marking unselectable">
+    <p *ngFor="let s of seconds">{{ s - 1 }}</p>
+  </div>
+</div>
+<div class="overlay-container">
+  <div
+    cdkDropList
+    id="appDawDrop"
+    (cdkDropListDropped)="onDrop($event)"
+    class="drop-zone"
+    [class.active]="dragging"
+    [cdkDropListConnectedTo]="['fileDropList']"
+  ></div>
+  <div class="container" #container (scroll)="syncScroll()">
+    <div
+      class="time-marker"
+      [style.transform]="'translate(' + translateX + 'px, 0px)'"
+      tabindex="0"
+      (keydown.enter)="play()"
+    ></div>
+    <app-track *ngFor="let track of tracks">
+      <app-audio
+        *ngFor="let audio of track.audios"
+        [path]="audio.path"
+        [X]="audio.X"
+        [zoom]="zoom"
+        [playingState]="playing"
+        [markerX]="translateX"
+      >
+      </app-audio>
+    </app-track>
+  </div>
+</div>

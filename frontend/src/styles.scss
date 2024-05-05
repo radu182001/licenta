@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-    --clr-background: #E0E0E0;
+    --clr-background: #d4d4d4;
     --clr-light: #FFFFFF;
     --clr-dark: #B9B9B9;
     --clr-primary: #FF7F50;
     --clr-secondary: #1E3A5F;
+    --clr-danger: #a72d17;
 
     --font-tiny: 0.8rem;
     --font-small: 1.1rem;
@@ -14,11 +15,15 @@
     --font-large: 1.8rem;
     --font-extralarge: 3rem;
 
+    --track-width: 500rem;
+
     color: var(--clr-secondary);
     background-color: var(--clr-background);
 
 
 }
+
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -32,6 +37,16 @@ img {
     display: block;
     width: 100%;
     object-fit: cover;
+}
+
+.text-clr {
+    color: var(--clr-secondary);
+}
+
+.required::after {
+    content: "*";
+    color: var(--clr-primary);
+    margin-left: 0.2rem;
 }
 
 .card-container {
@@ -64,6 +79,10 @@ img {
     width: 100%;
     padding: 6rem clamp(3.5rem, 12vw, 17rem);
     box-sizing: border-box;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: 1.2rem !important;
 }
 
 .unselectable {

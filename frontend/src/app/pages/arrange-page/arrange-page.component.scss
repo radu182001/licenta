@@ -1,0 +1,76 @@
+:host {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+
+.daw {
+    flex: 3;
+    min-width: 0;
+    //height: fit-content;
+}
+
+.audio-list {
+    flex: 1;
+    justify-content: flex-start;
+    min-width: 0;
+
+    .title {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        h1 {
+            font-size: var(--font-large);
+            font-weight: 500;
+        }
+
+        .import-btn {
+            background-color: var(--clr-primary);
+            box-shadow: none;
+            height: 100%;
+            padding: 0.3rem 1rem;
+            margin-left: 2rem;
+        }
+    }
+}
+
+#fileDropList {
+    width: 100%;
+}
+
+.audio-file {
+    width: 100%;
+    height: fit-content;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    
+}
+
+.title-with-icon {
+    padding: 0.4rem 0.2rem;
+    gap: 0.5rem;
+    width: 100%;
+    
+    h2 {
+        font-size: var(--font-tiny);
+        line-height: 1rem;
+        text-align: left;
+    }
+}
+
+.title-with-icon:hover {
+    cursor: pointer;
+    background-color: var(--clr-background);
+}
+
+.title-with-icon + .title-with-icon {
+    border-top: solid 0.15rem var(--clr-dark);
+}

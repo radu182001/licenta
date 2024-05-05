@@ -51,9 +51,49 @@ const uploadFile = async (req, res) => {
 
 const getProjectFilesList = async (req, res) => {
   try {
-    const result = await pool.query(queries.getFiles(req.params.id));
+    const result = await pool.query(
+      queries.getFiles(req.params.id, req.query.page, req.query.pageSize)
+    );
+
+    const totalFiles = await pool.query(queries.totalFiles(req.params.id));
+
+    res.status(200).send({ body: result.rows, total: totalFiles.rows[0] });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
+const getProjectAudioFilesList = async (req, res) => {
+  try {
+    const result = await pool.query(
+      queries.getAudioFiles(req.params.id, req.query.page, req.query.pageSize)
+    );
+
+    const totalFiles = await pool.query(queries.totalAudioFiles(req.params.id));
+
+    res.status(200).send({ body: result.rows, total: totalFiles.rows[0] });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
+const getArrangeFiles = async (req, res) => {
+  try {
+    const result = await pool.query(queries.getArrangeFiles(req.params.id));
 
     res.status(200).send({ body: result.rows });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
+const addToArrangeFile = async (req, res) => {
+  try {
+    const result = await pool.query(
+      queries.addToArrangeFile(req.params.projectID, req.body.fileID)
+    );
+
+    res.status(200).send({ msg: "Added succesfully!" });
   } catch (error) {
     return res.status(500).send({ error: error });
   }
@@ -139,5 +179,8 @@ module.exports = {
   getProfilePicture,
   getFile,
   getProjectFilesList,
+  getProjectAudioFilesList,
   deleteFile,
+  getArrangeFiles,
+  addToArrangeFile,
 };

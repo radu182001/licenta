@@ -1,0 +1,25 @@
+.audio-container {
+    background: rgb(11, 127, 131);
+    height: 100%;
+    border: 0.15rem solid var(--clr-secondary);
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.audio-container:focus {
+    border: 0.15rem solid var(--clr-primary);
+}
+
+.left {
+    height: 100%;
+    width: 2px;
+    cursor: col-resize;
+}
+
+.right {
+    height: 100%;
+    width: 2px;
+    cursor: col-resize;
+}

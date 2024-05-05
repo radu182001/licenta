@@ -1,0 +1,12 @@
+<div
+  #audioContainer
+  tabindex="0"
+  class="audio-container"
+  [style.width.px]="audioLength"
+  (mousedown)="onMouseDown($event)"
+  (mousemove)="onMouseMove($event)"
+  (mouseup)="onMouseUp()"
+>
+  <div class="left" (mousedown)="this.resizingLeft = true"></div>
+  <div class="right" (mousedown)="this.resizingRight = true"></div>
+</div>

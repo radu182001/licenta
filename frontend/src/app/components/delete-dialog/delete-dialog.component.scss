@@ -1,0 +1,32 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    color: var(--clr-secondary);
+}
+
+.delete-message {
+    padding: 0 !important;
+    margin: 0 !important;
+    align-self: start;
+    color: var(--clr-secondary);
+}
+
+.action-buttons {
+    justify-content: flex-end;
+}
+
+.delete-btn {
+    background-color: var(--clr-primary);
+    color: var(--clr-light) !important;
+}
+
+.dialog-title {
+    color: var(--clr-secondary);
+}
+
+.close-btn {
+    color: var(--clr-secondary) !important;
+}

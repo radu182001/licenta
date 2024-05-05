@@ -4,14 +4,15 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FileService } from '../../services/file.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-project-files-page',
   standalone: true,
-  imports: [FileComponent, MatCheckboxModule, CommonModule, MatButtonModule, MatDialogModule],
+  imports: [FileComponent, MatCheckboxModule, CommonModule, MatButtonModule, MatDialogModule, MatPaginatorModule],
   templateUrl: './project-files-page.component.html',
   styleUrl: './project-files-page.component.scss'
 })
@@ -19,7 +20,12 @@ export class ProjectFilesPageComponent implements OnInit{
   projectId: number = 0;
   files: any = [];
 
-  constructor(private fileService: FileService, private route: ActivatedRoute, private dialog: MatDialog) {}
+  // paging values
+  totalFiles: number = 0;
+  pageIndex: number = 0;
+  pageSize: number = 5;
+
+  constructor(private fileService: FileService, private route: ActivatedRoute, private dialog: MatDialog, private router: Router) {}
 
   uploadFile(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
@@ -28,7 +34,7 @@ export class ProjectFilesPageComponent implements OnInit{
     if (file && !isNaN(this.projectId)) {
       console.log(file);
       this.fileService.uploadFile(this.projectId, file).subscribe((response: any) => {
-        this.files.push(response.body);
+        this.getFiles();
       });
     }
   }
@@ -62,7 +68,27 @@ export class ProjectFilesPageComponent implements OnInit{
     console.log("delete");
     this.fileService.deleteFile(key).subscribe((response: any) => {
       this.files = this.files.filter((file: any) => file.key !== key);
+      this.getFiles();
     })
+  }
+
+  handlePageEvent(e: PageEvent) {
+    this.pageIndex = e.pageIndex;
+    this.pageSize = e.pageSize;
+
+    this.router.navigate([], {relativeTo: this.route.parent, queryParams: {page: this.pageIndex + 1},})
+  }
+
+  getFiles() {
+    this.route.queryParamMap.subscribe(params => {
+      let page = params.get('page');
+      this.fileService.getFilesList(this.projectId, {page: page, pageSize: this.pageSize}).subscribe((response: any) => {
+        this.files = response.body;
+        this.totalFiles = response.total.count;
+        console.log(response)
+      });
+    })
+    
   }
 
   ngOnInit(): void {
@@ -71,10 +97,7 @@ export class ProjectFilesPageComponent implements OnInit{
       if (isNaN(this.projectId)) {
         console.error("Project ID is not available or invalid");
       } else if (typeof localStorage !== 'undefined') { 
-        this.fileService.getFilesList(this.projectId).subscribe((response: any) => {
-          console.log(response.body);
-          this.files = response.body;
-        });
+        this.getFiles();
       }
     });
   }

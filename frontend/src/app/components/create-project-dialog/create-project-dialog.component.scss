@@ -1,0 +1,103 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 3rem 4rem;
+    border-radius: 1rem;
+    color: var(--clr-secondary);
+    max-width: 30rem;
+    width: 30rem;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: var(--clr-secondary);
+}
+
+.action-buttons {
+    justify-content: flex-end;
+}
+
+.create-btn {
+    background-color: var(--clr-primary);
+    color: var(--clr-light) !important;
+    font-size: var(--font-small);
+}
+
+.dialog-title {
+    color: var(--clr-secondary);
+    font-size: var(--font-large);
+}
+
+.close-btn {
+    color: var(--clr-secondary);
+    font-size: var(--font-small);
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+}
+
+.field-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 2.8rem;
+    border-radius: 0.7rem;
+    border: 0.2rem solid var(--clr-dark);
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .field {
+        flex: 1;
+        height: 2.8rem;
+        border: none;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
+        font-size: 1.3rem;
+        min-width: 1rem;
+        margin-left: 0.5rem;
+        width: 100%;
+    }
+
+    
+    
+    .field:focus {
+        border: none;
+        outline: none;
+    }
+
+    .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1.8rem;
+        height: 100%;
+        margin: 0 0.5rem;
+        color: var(--clr-dark);
+    }
+    
+    .mat-divider.mat-divider-vertical {
+        height: 70%;
+        border-right-width: 0.2rem;
+        color: var(--clr-dark);
+        border-right-color: var(--clr-dark);
+    }
+}
+
+.textarea {
+    min-height: 2.8rem;
+    height: fit-content;
+    resize: none;
+    align-items: flex-start;
+    padding-top: 0.5rem;
+}

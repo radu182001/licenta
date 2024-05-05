@@ -20,6 +20,20 @@ router.post(
 
 router.get("/getFilesList/:id", authorize, filesController.getProjectFilesList);
 
+router.get(
+  "/getAudioFilesList/:id",
+  authorize,
+  filesController.getProjectAudioFilesList
+);
+
+router.get("/getArrangeFiles/:id", authorize, filesController.getArrangeFiles);
+
+router.post(
+  "/addToArrangeFile/:projectID",
+  authorize,
+  filesController.addToArrangeFile
+);
+
 router.get("/profile", authorize, filesController.getProfilePicture);
 
 router.get("/:userID/:projectID/:file", authorize, filesController.getFile);

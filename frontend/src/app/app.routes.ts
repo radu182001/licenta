@@ -5,6 +5,7 @@ import { ProfilePageComponent } from './pages/profile-page/profile-page.componen
 import { ProjectPageComponent } from './pages/project-page/project-page.component';
 import { ProjectFilesPageComponent } from './pages/project-files-page/project-files-page.component';
 import { ProjectOptionsPageComponent } from './pages/project-options-page/project-options-page.component';
+import { ArrangePageComponent } from './pages/arrange-page/arrange-page.component';
 
 export const routes: Routes = [
     { path: '',   redirectTo: '/auth', pathMatch: 'full' },
@@ -29,6 +30,10 @@ export const routes: Routes = [
                     {
                         path: 'files',
                         component: ProjectFilesPageComponent
+                    },
+                    {
+                        path: 'arrange',
+                        component: ArrangePageComponent
                     }
                 ]
             }

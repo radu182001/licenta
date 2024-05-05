@@ -10,4 +10,6 @@ router.post("/addUserToProject", authorize, projectsController.addNewMember);
 
 router.get("/", authorize, projectsController.getProjects);
 
+router.get("/:id", authorize, projectsController.getProject);
+
 module.exports = router;

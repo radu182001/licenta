@@ -29,3 +29,13 @@
   (download)="downloadFile(file.key)"
 ></app-file>
 <p *ngIf="!files.length">No files uploaded</p>
+
+<mat-paginator
+  class="paginator"
+  (page)="handlePageEvent($event)"
+  [length]="totalFiles"
+  [pageSize]="5"
+  [hidePageSize]="true"
+  aria-label="Select page"
+>
+</mat-paginator>

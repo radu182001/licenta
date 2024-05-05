@@ -37,3 +37,13 @@
 .last-modified {
     justify-self: flex-end;
 }
+
+.paginator {
+    border-radius: 1.8rem;
+    padding: 0;
+    color: var(--clr-secondary);
+    font-size: var(--font-tiny);
+    font-weight: 500;
+
+    --mat-paginator-enabled-icon-color: var(--clr-secondary);
+}

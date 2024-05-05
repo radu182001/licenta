@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WebRequestService } from './web-request.service';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,35 @@ export class FileService {
     return this.webReqService.post(`/api/files/uploadFile/${projectID}`, formData);
   }
 
-  getFilesList(projectID: number) {
-    return this.webReqService.get(`/api/files/getFilesList/${projectID}`);
+  getFilesList(projectID: number, params?: any) {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach(key => {
+        httpParams = httpParams.set(key, params[key]);
+      });
+    }
+
+    return this.webReqService.get(`/api/files/getFilesList/${projectID}`, { params: httpParams });
+  }
+
+  getAudioFilesList(projectID: number, params?: any) {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach(key => {
+        httpParams = httpParams.set(key, params[key]);
+      });
+    }
+
+    return this.webReqService.get(`/api/files/getAudioFilesList/${projectID}`, { params: httpParams });
+  }
+
+  getArrangeFiles(projectID: number) {
+    return this.webReqService.get(`/api/files/getArrangeFiles/${projectID}`);
+  }
+
+  addToArrangeFile(projectID: number, fileID: number) {
+    console.log(fileID)
+    return this.webReqService.post(`/api/files/addToArrangeFile/${projectID}`, {fileID: fileID});
   }
 
   downloadFile(key: string) {
