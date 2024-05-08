@@ -45,7 +45,11 @@ CREATE TABLE ArrangeFile (
 CREATE TABLE DawAudio (
     ID SERIAL PRIMARY KEY,
     ProjectID INT REFERENCES Projects(ID),
-    FileID INT REFERENCES File(ID)
+    FileID INT REFERENCES File(ID),
+    X real NOT NULL, 
+    StartTime real NOT NULL,
+    EndTime real NOT NULL,
+    TrackIndex INT NOT NULL
 );
 
 CREATE TABLE Conversations (

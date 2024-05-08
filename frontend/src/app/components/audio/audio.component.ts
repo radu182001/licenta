@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, AfterViewInit, HostListener, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, AfterViewInit, HostListener, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { start } from 'repl';
 import { FileService } from '../../services/file.service';
 
@@ -15,13 +15,17 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   @Input("zoom") multiplier!: number;
   @Input("playingState") playing!: boolean;
   @Input("markerX") markerX: number = 0;
+  @Input("startTime") startTime: number = 0;
+  @Input("endTime") endTime: number = 0;
+
+  @Output("del") del = new EventEmitter();
 
   @ViewChild('audioContainer') ref!:ElementRef;
 
+  isSelected: boolean = false;
+
   audio!: HTMLAudioElement;
   audioLength: number = 0;
-  startTime: number = 0;
-  endTime: number = 0;
   viewInitialized = false;
   private isDragging = false;
   initX: number = 0;
@@ -34,6 +38,13 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   constructor(private renderer: Renderer2, private fileService: FileService) {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if ((event.key === 'Delete' || event.key === 'Del') && this.isSelected) { // 'Del' might be used by some browsers
+      this.del.emit();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -112,11 +123,12 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
       }
       , 10 * (this.X - this.markerX));
     } else {
-      this.audio.currentTime += (this.markerX - this.X) / this.multiplier / 100;
+      const tempStartTime = (this.markerX - this.X) / this.multiplier / 100;
+      this.audio.currentTime += tempStartTime;
       console.log(this.audio.currentTime);
       this.audio.play();
       this.playTimeout = setTimeout(() => this.stopAudio()
-      , (this.audio.duration - this.startTime - this.endTime) * 1000);
+      , (this.audio.duration - this.startTime - tempStartTime - this.endTime) * 1000);
     }
   }
 
@@ -156,6 +168,16 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   setTranslateStyle() {
     const translation = `translateX(${this.X * this.multiplier}px)`; // Use the X input for translation
     this.renderer.setStyle(this.ref.nativeElement, 'transform', translation);
+  }
+
+  // Selection function
+  selected() {
+    this.isSelected = true;
+    console.log(this.X)
+  }
+
+  notSelected() {
+    this.isSelected = false;
   }
 
   ngAfterViewInit(): void {

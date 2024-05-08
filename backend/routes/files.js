@@ -34,6 +34,16 @@ router.post(
   filesController.addToArrangeFile
 );
 
+router.get("/getDawAudios/:id", authorize, filesController.getDawAudios);
+
+router.post(
+  "/addToDawAudio/:projectID",
+  authorize,
+  filesController.addToDawAudio
+);
+
+router.delete("/deleteDawAudio/:id", authorize, filesController.delDawAudio);
+
 router.get("/profile", authorize, filesController.getProfilePicture);
 
 router.get("/:userID/:projectID/:file", authorize, filesController.getFile);

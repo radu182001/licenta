@@ -6,6 +6,7 @@ import { TrackComponent } from '../track/track.component';
 import {DragDropModule, CdkDragDrop} from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-daw',
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DawComponent implements OnInit, AfterViewInit{
   @Input('dragging') dragging: boolean = false;
+  @Input('projectId') projectId: number = 0;
 
   @ViewChild('container') scrollContainer!: ElementRef;
   @ViewChild('timeline') timeline!: ElementRef;
@@ -43,6 +45,8 @@ export class DawComponent implements OnInit, AfterViewInit{
     { audios: [] },
     // More tracks can be added dynamically
   ];
+
+  constructor(private fileService: FileService) {}
 
   @HostListener('window:wheel', ['$event'])
   onScroll(event: WheelEvent) {
@@ -95,11 +99,19 @@ export class DawComponent implements OnInit, AfterViewInit{
   onDrop(event: CdkDragDrop<any>) {
     const fileData = event.item.data; // Data passed from the drag source
     const relativePosition = this.getRelativePosition(event);
+    const X = relativePosition.x + this.scrollContainer.nativeElement.scrollLeft;
 
-    this.tracks[relativePosition.y].audios.push({
-      path: fileData.key,
-      X: relativePosition.x + this.scrollContainer.nativeElement.scrollLeft,
-    });
+    this.fileService.addToDawAudio(this.projectId, fileData.id, X, relativePosition.y).subscribe((response: any) => {
+      console.log("id: " + response.id)
+      this.tracks[relativePosition.y].audios.push({
+        path: fileData.key,
+        x: X,
+        starttime: 0,
+        endtime: 0,
+        id: response.id
+      });
+    })
+
   }
   
   private getRelativePosition(event: CdkDragDrop<any>): {x: number, y: number} {
@@ -114,6 +126,17 @@ export class DawComponent implements OnInit, AfterViewInit{
       x: event.dropPoint.x - dropZoneRect.left,
       y: Math.floor(y_map)
     };
+  }
+
+  deleteAudio(id: number) {
+    this.fileService.deleteDawAudio(id).subscribe((response: any) => {
+      this.tracks.forEach(track => {
+        const audioIndex = track.audios.findIndex((audio: any) => audio.id === id);
+        if (audioIndex !== -1) {
+          track.audios.splice(audioIndex, 1);
+        }
+      });
+    })
   }
   
   moveMarker(event: MouseEvent) {
@@ -134,7 +157,15 @@ export class DawComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit(): void {
+    if (typeof localStorage !== 'undefined' && this.projectId) {
+      this.fileService.getDawAudios(this.projectId).subscribe((response: any) => {
+        for (let track of response.body) {
+          this.tracks[track.trackindex].audios = track.audios;
+        }
+      });
+    }
 
+    console.log(this.tracks)
   }
 
   ngAfterViewInit(): void {

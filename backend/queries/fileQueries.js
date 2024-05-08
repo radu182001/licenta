@@ -17,6 +17,17 @@ const getArrangeFiles = (id) =>
 const addToArrangeFile = (projectID, fileID) =>
   `INSERT INTO ArrangeFile (ProjectID, FileID) VALUES('${projectID}', '${fileID}')`;
 
+const getDawAudio = (
+  projectID
+) => `SELECT audios.trackindex, json_agg(audios.*) as audios FROM (SELECT daw.trackindex, daw.id, f.key as path, daw.X, daw.starttime, daw.endtime
+FROM File f, DawAudio daw WHERE daw.fileid
+=f.id AND daw.projectid='${projectID}') AS audios GROUP BY audios.trackindex`;
+
+const addToDawAudio = (projectID, fileID, X, track) =>
+  `INSERT INTO DawAudio (ProjectID, FileID, X, StartTime, EndTime, TrackIndex) VALUES ('${projectID}','${fileID}', '${X}', 0, 0, '${track}') RETURNING id`;
+
+const deleteDawAudio = (id) => `DELETE FROM DawAudio WHERE id='${id}'`;
+
 const totalFiles = (id) => `SELECT COUNT(*) FROM File WHERE ProjectID = ${id}`;
 
 const totalAudioFiles = (id) =>
@@ -33,4 +44,7 @@ module.exports = {
   totalAudioFiles,
   getArrangeFiles,
   addToArrangeFile,
+  addToDawAudio,
+  getDawAudio,
+  deleteDawAudio,
 };

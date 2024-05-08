@@ -1,6 +1,8 @@
 <div
   #audioContainer
   tabindex="0"
+  (focus)="selected()"
+  (blur)="notSelected()"
   class="audio-container"
   [style.width.px]="audioLength"
   (mousedown)="onMouseDown($event)"

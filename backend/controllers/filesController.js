@@ -93,9 +93,43 @@ const addToArrangeFile = async (req, res) => {
       queries.addToArrangeFile(req.params.projectID, req.body.fileID)
     );
 
-    res.status(200).send({ msg: "Added succesfully!" });
+    res.status(201).send({ msg: "Added succesfully!" });
   } catch (error) {
     return res.status(500).send({ error: error });
+  }
+};
+
+const getDawAudios = async (req, res) => {
+  try {
+    const result = await pool.query(queries.getDawAudio(req.params.id));
+
+    res.status(200).send({ body: result.rows });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
+const addToDawAudio = async (req, res) => {
+  try {
+    const projectID = req.params.projectID;
+    const { fileID, X, trackIndex } = req.body;
+
+    id = await pool.query(
+      queries.addToDawAudio(projectID, fileID, X, trackIndex)
+    );
+
+    res.status(201).send({ msg: "Added succesfully!", id: id.rows[0].id });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
+const delDawAudio = async (req, res) => {
+  try {
+    await pool.query(queries.deleteDawAudio(req.params.id));
+    return res.status(200).send({ msg: "Audio deleted successfully!" });
+  } catch (error) {
+    res.status(500).send({ error: "Error deleting audio" });
   }
 };
 
@@ -183,4 +217,7 @@ module.exports = {
   deleteFile,
   getArrangeFiles,
   addToArrangeFile,
+  addToDawAudio,
+  getDawAudios,
+  delDawAudio,
 };

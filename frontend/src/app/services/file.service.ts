@@ -47,6 +47,18 @@ export class FileService {
     return this.webReqService.post(`/api/files/addToArrangeFile/${projectID}`, {fileID: fileID});
   }
 
+  getDawAudios(projectID: number) {
+    return this.webReqService.get(`/api/files/getDawAudios/${projectID}`);
+  }
+
+  addToDawAudio(projectID: number, fileID: number, X: number, trackIndex: number) {
+    return this.webReqService.post(`/api/files/addToDawAudio/${projectID}`, {fileID: fileID, X: X, trackIndex: trackIndex});
+  }
+
+  deleteDawAudio(id: number) {
+    return this.webReqService.delete(`/api/files/deleteDawAudio/${id}`);
+  }
+
   downloadFile(key: string) {
     return this.webReqService.get(`/api/files/${key}`);
   }
