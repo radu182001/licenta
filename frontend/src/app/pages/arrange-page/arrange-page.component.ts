@@ -28,10 +28,7 @@ export class ArrangePageComponent implements OnInit {
     this.mouseUp();
   }
 
-  audioFiles: any = [
-    {name: "Kick", path: "../../assets/Kick.wav"},
-    {name: "Snare", path: "../../assets/snare.wav"}
-  ]
+  audioFiles: any = [];
 
   mouseUp() {
     this.dragging = false;

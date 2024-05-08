@@ -4,10 +4,11 @@
   }}</mat-icon>
 
   <mat-icon class="record-btn">fiber_manual_record</mat-icon>
+  <h3 class="time">{{translateX / 100}}</h3>
 </div>
 <div #timeline class="timeline" (mouseup)="moveMarker($event)">
   <div class="marking unselectable">
-    <p *ngFor="let s of seconds">{{ s - 1 }}</p>
+    <p  [style.margin-right]="secondLen + 'px'" [style.width]="'0px'" *ngFor="let s of seconds" #timeNumber>{{ s - 1 }}</p>
   </div>
 </div>
 <div class="overlay-container">
@@ -19,6 +20,7 @@
     [class.active]="dragging"
     [cdkDropListConnectedTo]="['fileDropList']"
   ></div>
+
   <div class="container" #container (scroll)="syncScroll()">
     <div
       class="time-marker"

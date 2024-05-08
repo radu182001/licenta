@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, HostListener, ChangeDetectorRef, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, HostListener, ChangeDetectorRef, Input, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AudioComponent } from '../audio/audio.component';
@@ -14,11 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './daw.component.html',
   styleUrl: './daw.component.scss'
 })
-export class DawComponent implements OnInit{
+export class DawComponent implements OnInit, AfterViewInit{
   @Input('dragging') dragging: boolean = false;
 
   @ViewChild('container') scrollContainer!: ElementRef;
   @ViewChild('timeline') timeline!: ElementRef;
+  @ViewChild('timeNumber') timeNumber!: ElementRef;
 
   playing: boolean = false;
   private intervalId: any = null;
@@ -26,9 +27,13 @@ export class DawComponent implements OnInit{
   @ViewChildren(AudioComponent) audioComponents!: QueryList<AudioComponent>;
 
   translateX: number = 0;
+  markerFrameRate: number = 10;
   zoom: number = 1;
+  timeLength: number = 0
 
-  seconds = Array.from({length: 100}, (_, i) => i + 1);
+  secondLen: number = 0;
+  seconds:any = [];
+  time: number = 0;
 
   tracks: any[] = [
     { audios: [] },
@@ -64,7 +69,8 @@ export class DawComponent implements OnInit{
     if (!this.playing) {
       this.intervalId = setInterval(() => {
         this.translateX += this.zoom;
-      }, 10);
+        this.time = this.markerFrameRate;
+      }, this.markerFrameRate);
 
       this.playing = true;
 
@@ -79,6 +85,7 @@ export class DawComponent implements OnInit{
 
       clearInterval(this.intervalId);
       this.translateX = 0;
+      this.time = 0;
       this.playing = false;
     }
   }
@@ -121,7 +128,20 @@ export class DawComponent implements OnInit{
     }
   }
 
+  getTimeLength() {
+    this.secondLen = 1000 / this.markerFrameRate
+    return this.scrollContainer.nativeElement.scrollWidth / (this.secondLen * this.zoom);
+  }
+
   ngOnInit(): void {
-    
+
+  }
+
+  ngAfterViewInit(): void {
+    // Now it's safe to use nativeElement
+    this.timeLength = this.getTimeLength();
+    this.seconds = Array.from({ length: this.timeLength + 1 }, (_, i) => i + 1);
+
+    //this.syncScroll(); // Example call if needed immediately after view init
   }
 }

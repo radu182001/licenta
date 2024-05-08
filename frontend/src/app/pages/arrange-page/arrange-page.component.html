@@ -9,6 +9,7 @@
       <mat-icon>publish</mat-icon>
     </button>
   </div>
+  <p *ngIf="!audioFiles.length">No audio imported</p>
   <div id="fileDropList" cdkDropList [cdkDropListConnectedTo]="['appDawDrop']">
     <div
       class="title-with-icon"
