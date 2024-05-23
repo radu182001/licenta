@@ -9,6 +9,12 @@
   (mousemove)="onMouseMove($event)"
   (mouseup)="onMouseUp()"
 >
-  <div class="left" (mousedown)="this.resizingLeft = true"></div>
-  <div class="right" (mousedown)="this.resizingRight = true"></div>
+  <div class="left" tabindex="0" (mousedown)="this.resizingLeft = true"></div>
+  <div class="right" tabindex="0" (mousedown)="this.resizingRight = true"></div>
+  <div
+    [id]="'waveform' + id"
+    class="waveform-container"
+    [style.transform]="'translate(' + -startTime * 100 + 'px, -1rem)'"
+    [style.minWidth.px]="fullLength"
+  ></div>
 </div>

@@ -8,6 +8,7 @@ const auth = require("./routes/auth");
 const projects = require("./routes/projects");
 const chat = require("./routes/chat");
 const files = require("./routes/files");
+const lyrics = require("./routes/lyrics");
 
 if (!config.get("jwtPrivateKey")) {
   console.error("FATAL ERROR: jwtPrivateKey is not defined.");
@@ -29,6 +30,7 @@ app.use("/api/auth", auth);
 app.use("/api/projects", projects);
 app.use("/api/chat", chat);
 app.use("/api/files", files);
+app.use("/api/lyrics", lyrics);
 
 const port = 3000;
 app.listen(port, () => console.log(`Listening on port ${port}`));

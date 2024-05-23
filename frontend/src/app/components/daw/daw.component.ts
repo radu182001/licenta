@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, HostListener, ChangeDetectorRef, Input, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, HostListener, ChangeDetectorRef, Input, ElementRef, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AudioComponent } from '../audio/audio.component';
@@ -15,27 +15,31 @@ import { FileService } from '../../services/file.service';
   templateUrl: './daw.component.html',
   styleUrl: './daw.component.scss'
 })
-export class DawComponent implements OnInit, AfterViewInit{
+export class DawComponent implements OnInit, AfterViewInit, OnChanges{
   @Input('dragging') dragging: boolean = false;
   @Input('projectId') projectId: number = 0;
 
   @ViewChild('container') scrollContainer!: ElementRef;
+  @ViewChild('timeMarker') timeMarker!: ElementRef;
+  @ViewChild('markLines') markLines!: ElementRef;
   @ViewChild('timeline') timeline!: ElementRef;
   @ViewChild('timeNumber') timeNumber!: ElementRef;
 
   playing: boolean = false;
   private intervalId: any = null;
 
+  isSaved: boolean = true;
+
   @ViewChildren(AudioComponent) audioComponents!: QueryList<AudioComponent>;
 
   translateX: number = 0;
+  translateLastPos: number = 0;
   markerFrameRate: number = 10;
   zoom: number = 1;
   timeLength: number = 0
 
   secondLen: number = 0;
   seconds:any = [];
-  time: number = 0;
 
   tracks: any[] = [
     { audios: [] },
@@ -45,6 +49,8 @@ export class DawComponent implements OnInit, AfterViewInit{
     { audios: [] },
     // More tracks can be added dynamically
   ];
+
+  changes: any = [];
 
   constructor(private fileService: FileService) {}
 
@@ -73,7 +79,6 @@ export class DawComponent implements OnInit, AfterViewInit{
     if (!this.playing) {
       this.intervalId = setInterval(() => {
         this.translateX += this.zoom;
-        this.time = this.markerFrameRate;
       }, this.markerFrameRate);
 
       this.playing = true;
@@ -88,8 +93,7 @@ export class DawComponent implements OnInit, AfterViewInit{
       });
 
       clearInterval(this.intervalId);
-      this.translateX = 0;
-      this.time = 0;
+      this.translateX = this.translateLastPos;
       this.playing = false;
     }
   }
@@ -142,6 +146,16 @@ export class DawComponent implements OnInit, AfterViewInit{
   moveMarker(event: MouseEvent) {
     //console.log(event.clientX - this.scrollContainer.nativeElement.getBoundingClientRect().left)
     this.translateX = event.clientX - this.scrollContainer.nativeElement.getBoundingClientRect().left + this.scrollContainer.nativeElement.scrollLeft;
+    this.translateLastPos = this.translateX;
+  }
+
+  goToStart() {
+    this.translateX = 0;
+    this.translateLastPos = this.translateX;
+
+    if (this.playing) {
+      this.play();
+    }
   }
 
   syncScroll(): void {
@@ -154,6 +168,72 @@ export class DawComponent implements OnInit, AfterViewInit{
   getTimeLength() {
     this.secondLen = 1000 / this.markerFrameRate
     return this.scrollContainer.nativeElement.scrollWidth / (this.secondLen * this.zoom);
+  }
+
+  handleXChanges(e: number, id: number) {
+    console.log("xchange");
+    if (this.isSaved)
+      this.isSaved = false;
+
+    const index = this.changes.findIndex((c: any) => c.id === id);
+
+    if (index >= 0) {
+      this.changes[index].X = e;
+    }
+    else {
+      const change = {id: id, X: e};
+      this.changes.push(change);
+    }
+
+    console.log(this.changes);
+  }
+
+  handleStartChange(e: number, id: number) {
+    console.log("startchange");
+    if (this.isSaved)
+      this.isSaved = false;
+
+    const index = this.changes.findIndex((c: any) => c.id === id);
+
+    if (index >= 0) {
+      this.changes[index].startTime = e;
+    }
+    else {
+      const change = {id: id, startTime: e};
+      this.changes.push(change);
+    }
+
+    console.log(this.changes);
+
+  }
+
+  handleEndChange(e: number, id: number) {
+    console.log("endchange");
+    if (this.isSaved)
+      this.isSaved = false;
+
+    const index = this.changes.findIndex((c: any) => c.id === id);
+
+    if (index >= 0) {
+      this.changes[index].endTime = e;
+    }
+    else {
+      const change = {id: id, endTime: e};
+      this.changes.push(change);
+    }
+
+    console.log(this.changes);
+  }
+
+  saveChanges() {
+
+    this.changes.forEach((change: any) => {
+      this.fileService.updateDawAudio(change.id, change.X, change.startTime, change.endTime).subscribe((response) => {
+        console.log("updated");
+      });
+    });
+
+    this.isSaved = true;
   }
 
   ngOnInit(): void {
@@ -173,6 +253,14 @@ export class DawComponent implements OnInit, AfterViewInit{
     this.timeLength = this.getTimeLength();
     this.seconds = Array.from({ length: this.timeLength + 1 }, (_, i) => i + 1);
 
+    const container: HTMLElement = this.scrollContainer.nativeElement;
+    const timeMarker: HTMLElement = this.timeMarker.nativeElement;
+    timeMarker.style.height = `${container.scrollHeight}px`;
+    this.markLines.nativeElement.style.height = `${container.scrollHeight}px`;
     //this.syncScroll(); // Example call if needed immediately after view init
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
   }
 }

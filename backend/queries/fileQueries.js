@@ -28,6 +28,22 @@ const addToDawAudio = (projectID, fileID, X, track) =>
 
 const deleteDawAudio = (id) => `DELETE FROM DawAudio WHERE id='${id}'`;
 
+const updateDawAudio = (id, x, startTime, endTime) => {
+  let query = "UPDATE DawAudio SET";
+
+  const changes = [];
+
+  if (x !== undefined) changes.push(` X = ${x}`);
+  if (startTime !== undefined) changes.push(` StartTime = ${startTime}`);
+  if (endTime !== undefined) changes.push(` EndTime = ${endTime}`);
+
+  query += changes.join(",");
+
+  query += ` WHERE ID = ${id};`;
+
+  return query;
+};
+
 const totalFiles = (id) => `SELECT COUNT(*) FROM File WHERE ProjectID = ${id}`;
 
 const totalAudioFiles = (id) =>
@@ -47,4 +63,5 @@ module.exports = {
   addToDawAudio,
   getDawAudio,
   deleteDawAudio,
+  updateDawAudio,
 };

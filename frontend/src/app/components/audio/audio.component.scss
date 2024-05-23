@@ -1,10 +1,13 @@
 .audio-container {
-    background: rgb(11, 127, 131);
+    background: rgb(46, 154, 158);
+    width: 100%;
     height: 100%;
+    overflow: hidden;
     border: 0.15rem solid var(--clr-secondary);
     position: absolute;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     box-sizing: border-box;
 }
 
@@ -13,13 +16,23 @@
 }
 
 .left {
+    position: absolute;
+    left: -1px;
     height: 100%;
-    width: 2px;
+    width: 3px;
     cursor: col-resize;
 }
 
 .right {
+    position: absolute;
+    right: 1px;
     height: 100%;
-    width: 2px;
+    width: 3px;
     cursor: col-resize;
+}
+
+.waveform-container {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }

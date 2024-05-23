@@ -1,0 +1,28 @@
+<div class="header">
+  <div class="options">
+    <button class="option" [matMenuTriggerFor]="menu">Insert section</button>
+    <div class="divider"></div>
+    <button class="option" (click)="generatePDF()">Export</button>
+  </div>
+  <button class="save-btn" [class.saved]="isSaved" (click)="saveChanges()">
+    {{ isSaved ? "Saved" : "Save changes" }}
+  </button>
+</div>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="insertSection('Intro')">Intro</button>
+  <button mat-menu-item (click)="insertSection('Verse')">Verse</button>
+  <button mat-menu-item (click)="insertSection('Chorus')">Chorus</button>
+  <button mat-menu-item (click)="insertSection('Pre chorus')">
+    Pre chorus
+  </button>
+  <button mat-menu-item (click)="insertSection('Bridge')">Bridge</button>
+  <button mat-menu-item (click)="insertSection('Outro')">Outro</button>
+</mat-menu>
+<div
+  #textarea
+  id="paper"
+  [innerHTML]="htmlContent"
+  [innerText]="innerText"
+  contenteditable="true"
+  (blur)="updateContent()"
+></div>

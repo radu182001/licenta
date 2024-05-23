@@ -1,10 +1,18 @@
 <div class="toolbar">
-  <mat-icon class="play-btn" (click)="play()">{{
-    playing ? "pause" : "play_arrow"
-  }}</mat-icon>
+  <div class="main-btns">
+    <mat-icon class="goto-start-btn" (click)="goToStart()"
+      >skip_previous</mat-icon
+    >
+    <mat-icon class="play-btn" (click)="play()">{{
+      playing ? "pause" : "play_arrow"
+    }}</mat-icon>
 
-  <mat-icon class="record-btn">fiber_manual_record</mat-icon>
-  <h3 class="time">{{ translateX / zoom / 100 }}</h3>
+    <mat-icon class="record-btn">fiber_manual_record</mat-icon>
+  </div>
+  <h3 class="time">{{ translateX / zoom / 100 | number : "1.2-2" }}</h3>
+  <button class="save-btn" [class.saved]="isSaved" (click)="saveChanges()">
+    {{ isSaved ? "Saved" : "Save changes" }}
+  </button>
 </div>
 <div #timeline class="timeline" (mouseup)="moveMarker($event)">
   <div class="marking unselectable">
@@ -30,11 +38,22 @@
 
   <div class="container" #container (scroll)="syncScroll()">
     <div
+      #timeMarker
       class="time-marker"
       [style.transform]="'translate(' + translateX + 'px, 0px)'"
       tabindex="0"
       (keydown.enter)="play()"
     ></div>
+    <div #markLines class="markLines">
+      <div
+        [style.margin-right]="secondLen * zoom + 'px'"
+        [style.width]="'0px'"
+        *ngFor="let s of seconds"
+        #markLine
+      >
+        <div class="mark"></div>
+      </div>
+    </div>
     <app-track *ngFor="let track of tracks">
       <app-audio
         *ngFor="let audio of track.audios"
@@ -45,7 +64,11 @@
         [markerX]="translateX"
         [startTime]="audio.starttime"
         [endTime]="audio.endtime"
+        [id]="audio.id"
         (del)="deleteAudio(audio.id)"
+        (XChange)="handleXChanges($event, audio.id)"
+        (startChange)="handleStartChange($event, audio.id)"
+        (endChange)="handleEndChange($event, audio.id)"
       >
       </app-audio>
     </app-track>

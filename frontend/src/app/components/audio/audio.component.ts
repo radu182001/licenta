@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Renderer2, AfterViewInit, HostListener, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { start } from 'repl';
+import WaveSurfer from 'wavesurfer.js'
 import { FileService } from '../../services/file.service';
 
 @Component({
@@ -17,8 +17,12 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   @Input("markerX") markerX: number = 0;
   @Input("startTime") startTime: number = 0;
   @Input("endTime") endTime: number = 0;
+  @Input("id") id: number = 0;
 
   @Output("del") del = new EventEmitter();
+  @Output("XChange") XChange = new EventEmitter();
+  @Output("startChange") startTimeChange = new EventEmitter();
+  @Output("endChange") endTimeChange = new EventEmitter();
 
   @ViewChild('audioContainer') ref!:ElementRef;
 
@@ -33,11 +37,14 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   delayTimeout!: ReturnType<typeof setTimeout>;
   resizingLeft: boolean = false;
   resizingRight: boolean = false;
+  fullLength: number = 0;
 
 
   constructor(private renderer: Renderer2, private fileService: FileService) {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+
+
   }
 
   @HostListener('window:keydown', ['$event'])
@@ -63,12 +70,12 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
     if (!this.resizingLeft && !this.resizingRight) {
       this.isDragging = true;
       this.initX = event.clientX;
-
-      window.addEventListener('mousemove', this.onMouseMove.bind(this));
-      window.addEventListener('mouseup', this.onMouseUp.bind(this));
     } else if (this.resizingLeft || this.resizingRight) {
       this.initX = event.clientX;
     }
+
+    window.addEventListener('mousemove', this.onMouseMove);
+    window.addEventListener('mouseup', this.onMouseUp);
   }
 
   onMouseMove(event: MouseEvent) {
@@ -91,12 +98,24 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   }
 
   onMouseUp() {
+    if (this.isDragging)
+      this.XChange.emit(this.X);
+
+    if (this.resizingLeft) {
+      this.startTimeChange.emit(this.startTime);
+      this.XChange.emit(this.X);
+    }
+
+    if (this.resizingRight)
+      this.endTimeChange.emit(this.endTime);
+
     this.isDragging = false;
     this.resizingLeft = false;
     this.resizingRight = false;
 
-    window.removeEventListener('mousemove', this.onMouseMove.bind(this));
-    window.removeEventListener('mouseup', this.onMouseUp.bind(this));
+    window.removeEventListener('mousemove', this.onMouseMove);
+    window.removeEventListener('mouseup', this.onMouseUp);
+    
   }
 
   initAudio() {
@@ -108,6 +127,18 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
       this.audio.load();
       this.audio.currentTime = this.startTime;
       this.getLength();
+      
+
+      const wavesurfer = WaveSurfer.create({
+        container: `#waveform${this.id}`,
+        waveColor: '#1E3A5F',
+        progressColor: '#1E3A5F',
+        cursorWidth: 0,
+        backend: 'MediaElement',
+        minPxPerSec: 100
+      })
+
+      wavesurfer.load(response.url);
     });
     
   }
@@ -152,8 +183,8 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
       this.setTranslateStyle();
       this.startTime += x / this.multiplier / 100;
       this.audio.currentTime = this.startTime;
-      console.log(this.audio.currentTime);
       this.getLength();
+      console.log(this.startTime * 100, this.X)
     }
   }
 
@@ -161,6 +192,7 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
     this.audio.addEventListener('loadedmetadata', () => {
       console.log(this.multiplier + "<----");
       this.audioLength = (this.audio.duration - this.startTime - this.endTime) * 100 * this.multiplier;
+      this.fullLength = this.audio.duration * 100 * this.multiplier;
     });
     this.audioLength = (this.audio.duration - this.startTime - this.endTime) * 100 * this.multiplier;
   }

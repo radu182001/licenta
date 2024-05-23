@@ -133,6 +133,22 @@ const delDawAudio = async (req, res) => {
   }
 };
 
+const updateDawAudio = async (req, res) => {
+  try {
+    await pool.query(
+      queries.updateDawAudio(
+        req.params.id,
+        req.body.x,
+        req.body.startTime,
+        req.body.endTime
+      )
+    );
+    return res.status(200).send({ msg: "Changes saved" });
+  } catch (error) {
+    res.status(500).send({ error: "Error deleting audio" });
+  }
+};
+
 const getProfilePicture = async (req, res) => {
   const bucketName = values.bucketname;
 
@@ -220,4 +236,5 @@ module.exports = {
   addToDawAudio,
   getDawAudios,
   delDawAudio,
+  updateDawAudio,
 };

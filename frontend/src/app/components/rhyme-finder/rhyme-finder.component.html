@@ -1,0 +1,53 @@
+<div class="input-container">
+  <div class="field-container">
+    <input
+      [(ngModel)]="word"
+      type="text"
+      class="field"
+      placeholder="Write a word to rhyme..."
+    />
+  </div>
+  <button
+    mat-mini-fab
+    [disabled]="!word || word.trim() === ''"
+    (click)="findRhymes()"
+    aria-label="Find"
+  >
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>
+<div class="filters">
+  <mat-icon>filter_list</mat-icon>
+  <div class="filter">
+    <h2>syllables</h2>
+    <div class="syllables-menu" [matMenuTriggerFor]="menu">
+      <span> {{ selectedNumSyllables > 0 ? selectedNumSyllables : "-" }}</span
+      ><mat-icon>keyboard_arrow_down</mat-icon>
+    </div>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="selectSyllables(-1)">-</button>
+      <button
+        mat-menu-item
+        *ngFor="let i of numSyllables"
+        (click)="selectSyllables(i)"
+      >
+        {{ i + 1 }}
+      </button>
+    </mat-menu>
+  </div>
+</div>
+<h2>Results</h2>
+<div class="results">
+  <div *ngIf="!results.length" style="margin-top: 0.5rem">No results</div>
+  <mat-chip-set aria-label="rhyme results">
+    <mat-chip
+      class="res"
+      *ngFor="let res of results"
+      [matTooltip]="res.defs"
+      [matTooltipShowDelay]="1000"
+      matTooltipClass="definitions"
+      >{{ res.word }}</mat-chip
+    >
+  </mat-chip-set>
+</div>

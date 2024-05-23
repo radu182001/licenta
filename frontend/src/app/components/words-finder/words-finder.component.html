@@ -1,0 +1,32 @@
+<div class="input-container">
+  <div class="field-container">
+    <input
+      [(ngModel)]="word"
+      type="text"
+      class="field"
+      placeholder="Write expression to find similar words..."
+    />
+  </div>
+  <button
+    mat-mini-fab
+    [disabled]="!word || word.trim() === ''"
+    (click)="findWords()"
+    aria-label="Find"
+  >
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>
+<h2>Results</h2>
+<div class="results">
+  <div *ngIf="!results.length" style="margin-top: 0.5rem">No results</div>
+  <mat-chip-set aria-label="rhyme results">
+    <mat-chip
+      class="res"
+      *ngFor="let res of results"
+      [matTooltip]="res.defs"
+      [matTooltipShowDelay]="1000"
+      matTooltipClass="definitions"
+      >{{ res.word }}</mat-chip
+    >
+  </mat-chip-set>
+</div>

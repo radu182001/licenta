@@ -44,6 +44,8 @@ router.post(
 
 router.delete("/deleteDawAudio/:id", authorize, filesController.delDawAudio);
 
+router.put("/updateDawAudio/:id", authorize, filesController.updateDawAudio);
+
 router.get("/profile", authorize, filesController.getProfilePicture);
 
 router.get("/:userID/:projectID/:file", authorize, filesController.getFile);

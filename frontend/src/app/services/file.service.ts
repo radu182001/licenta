@@ -59,6 +59,10 @@ export class FileService {
     return this.webReqService.delete(`/api/files/deleteDawAudio/${id}`);
   }
 
+  updateDawAudio(id: number, x?: number, startTime?: number, endTime?: number) {
+    return this.webReqService.put(`/api/files/updateDawAudio/${id}`, {x: x, startTime: startTime, endTime: endTime});
+  }
+
   downloadFile(key: string) {
     return this.webReqService.get(`/api/files/${key}`);
   }

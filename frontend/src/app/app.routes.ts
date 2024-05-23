@@ -6,6 +6,7 @@ import { ProjectPageComponent } from './pages/project-page/project-page.componen
 import { ProjectFilesPageComponent } from './pages/project-files-page/project-files-page.component';
 import { ProjectOptionsPageComponent } from './pages/project-options-page/project-options-page.component';
 import { ArrangePageComponent } from './pages/arrange-page/arrange-page.component';
+import { LyricsPageComponent } from './pages/lyrics-page/lyrics-page.component';
 
 export const routes: Routes = [
     { path: '',   redirectTo: '/auth', pathMatch: 'full' },
@@ -34,6 +35,10 @@ export const routes: Routes = [
                     {
                         path: 'arrange',
                         component: ArrangePageComponent
+                    },
+                    {
+                        path: 'lyrics',
+                        component: LyricsPageComponent
                     }
                 ]
             }
