@@ -23,7 +23,13 @@ const getUserRole = (userID, projectID) =>
   `SELECT role FROM UserProjects WHERE UserID = ${userID} AND ProjectID = ${projectID}`;
 
 const getProjects = (userID) =>
-  `SELECT id, name FROM Projects WHERE OwnerID = '${userID}'`;
+  `SELECT p.id, p.name FROM Projects p, UserProjects up  WHERE up.UserID = '${userID}' AND p.ID = up.ProjectID`;
+
+const getUsersInProject = (id) =>
+  `SELECT u.id, u.username, up.role FROM Users u, UserProjects up WHERE up.ProjectID=${id} AND up.UserID=u.ID`;
+
+const getStats = (userId) =>
+  `SELECT role, count(*) from userprojects where userid=${userId} group by role`;
 
 module.exports = {
   getProjectByName,
@@ -32,4 +38,6 @@ module.exports = {
   getUserRole,
   getProjects,
   getProject,
+  getUsersInProject,
+  getStats,
 };

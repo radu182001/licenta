@@ -3,6 +3,7 @@
   color="primary"
   class="uploadBtn"
   (click)="fileInput.click()"
+  *ngIf="role === 'admin' || role === 'manager'"
 >
   Upload file
 </button>
@@ -13,8 +14,10 @@
   (change)="uploadFile($event)"
 />
 <div class="card-container">
-  <mat-checkbox></mat-checkbox>
-  <h2>File name</h2>
+  <div class="info">
+    <mat-checkbox></mat-checkbox>
+    <h2>File name</h2>
+  </div>
   <h2 class="created-by">Created by</h2>
   <h2 class="last-modified">Last modified</h2>
 </div>
@@ -27,6 +30,7 @@
   [date]="file.timestamp"
   (delete)="triggerDelete(file.key)"
   (download)="downloadFile(file.key)"
+  [masterRole]="role"
 ></app-file>
 <p *ngIf="!files.length">No files uploaded</p>
 

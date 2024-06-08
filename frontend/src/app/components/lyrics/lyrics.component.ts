@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { LyricsService } from '../../services/lyrics.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
+import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-lyrics',
@@ -16,20 +18,29 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrl: './lyrics.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class LyricsComponent {
+export class LyricsComponent implements OnInit {
   @ViewChild('textarea') textarea!: ElementRef;
   @ViewChild('container') container!: ElementRef;
 
-  isSaved: boolean = false;
+  isSaved: boolean = true;
 
   suggestions: any = "";
   text: string = "";
   htmlContent: any = '';
   innerText: any = '';
 
+  projectId: number = 0;
+  role: string = "";
+
   position = { top: 0, left: 0 };
 
-  constructor(private lyricsService: LyricsService, private renderer: Renderer2, private sanitizer: DomSanitizer) {}
+  constructor(
+    private lyricsService: LyricsService, 
+    private renderer: Renderer2, 
+    private sanitizer: DomSanitizer, 
+    private route: ActivatedRoute,
+    private projectService: ProjectService
+  ) {}
 
   insertSection(title: string) {
     const sectionHtml = `<div contenteditable="false" class="section" style="color: #971717;"><b>---- ${title} ----</b></div><br><br>`;
@@ -37,6 +48,7 @@ export class LyricsComponent {
     const currentContent = container.innerHTML;
     const updatedContent = currentContent + sectionHtml;
     this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(updatedContent);
+    this.isSaved = false;
   }
 
   updateContent() {
@@ -45,13 +57,35 @@ export class LyricsComponent {
   }
 
   saveChanges() {
-    this.isSaved = true
+    this.lyricsService.updateLyrics(this.projectId, this.htmlContent.changingThisBreaksApplicationSecurity)
+      .subscribe((response: any) => {
+        this.isSaved = true;
+        
+      })
+    
   }
 
   generatePDF() {
     // Retrieve the text property of the element 
     console.log(this.htmlContent.changingThisBreaksApplicationSecurity)
     this.lyricsService.generatePDF(this.htmlContent.changingThisBreaksApplicationSecurity, 'lyrics.pdf')
+  }
+
+  ngOnInit(): void {
+    this.route.parent?.paramMap.subscribe(params => {
+      this.projectId = Number(params.get('id'));
+      if (isNaN(this.projectId)) {
+        console.error("Project ID is not available or invalid");
+      } else if (typeof localStorage !== 'undefined') { 
+        this.lyricsService.getLyrics(this.projectId).subscribe((response: any) => {
+          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.content)
+        })
+
+        this.projectService.getRole(this.projectId).subscribe((response: any) => {
+          this.role = response.role;
+        });
+      }
+    });
   }
 
 }

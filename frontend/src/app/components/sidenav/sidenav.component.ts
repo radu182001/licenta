@@ -58,7 +58,9 @@ export class SidenavComponent implements OnInit{
 
   // Dynamically updates the max-height for the projects list
   updateProjectsHeight() {
-    this.projectsMaxHeight *= this.projects.length;
+    if (this.projects.length <= 5)
+      this.projectsMaxHeight *= this.projects.length;
+    else this.projectsMaxHeight *= 5;
   }
 
   ngOnInit(): void {

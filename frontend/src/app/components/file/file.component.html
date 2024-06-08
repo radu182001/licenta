@@ -1,17 +1,28 @@
 <div class="card-container">
-  <mat-checkbox></mat-checkbox>
-  <mat-icon>insert_drive_file</mat-icon>
-  <div class="file-info">
-    <h2>{{ name }}</h2>
-    <h3>{{ size + " " + format }}</h3>
+  <div class="info">
+    <mat-checkbox></mat-checkbox>
+    <mat-icon>insert_drive_file</mat-icon>
+    <div class="file-info">
+      <h2>{{ name }}</h2>
+      <h3>{{ size + " " + format }}</h3>
+    </div>
   </div>
   <h2 class="user">{{ "@" + user }}</h2>
-  <h2 class="date">{{ date }}</h2>
-  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="File options">
-    <mat-icon>more_vert</mat-icon>
-  </button>
+  <div class="end">
+    <h2 class="date">{{ date }}</h2>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="File options"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
+    <button
+      mat-menu-item
+      *ngIf="masterRole === 'admin' || masterRole === 'manager'"
+    >
       <mat-icon>edit</mat-icon>
       <span>Rename</span>
     </button>
@@ -19,7 +30,11 @@
       <mat-icon>get_app</mat-icon>
       <span>Download</span>
     </button>
-    <button mat-menu-item (click)="delete.emit()">
+    <button
+      mat-menu-item
+      (click)="delete.emit()"
+      *ngIf="masterRole === 'admin' || masterRole === 'manager'"
+    >
       <mat-icon>delete</mat-icon>
       <span>Delete</span>
     </button>

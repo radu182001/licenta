@@ -1,0 +1,54 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.container {
+    background-color: #EBEBEB;
+    height: fit-content;
+    padding: 0.4rem 1rem;
+    border-radius: 1rem;
+    //border-top-right-radius: 0;
+    color: var(--clr-secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 20rem;
+    box-sizing: border-box;
+
+    h3 {
+        font-size: var(--font-smaller);
+        align-self: flex-start;
+        color: var(--clr-primary);
+        margin: 0;
+        padding: 0;
+        height: fit-content;
+        cursor: default;
+        line-height: 1.3rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: var(--font-small);
+        line-height: 1rem;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: fit-content;
+    }
+
+    .time {
+        align-self: flex-end;
+        font-size: var(--font-tiny);
+        margin-top: 1rem;
+        margin-left: 1rem;
+        text-wrap: nowrap;
+        white-space: nowrap;
+    }
+}

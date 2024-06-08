@@ -11,6 +11,39 @@ const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const s3Client = require("../database/s3Client");
 const values = require("../utils/values");
 
+const getProfileImageGeneral = async (id) => {
+  bucketName = values.bucketname;
+
+  try {
+    const listParams = {
+      Bucket: bucketName,
+      Prefix: `${id}/profile/`,
+      MaxKeys: 1,
+    };
+
+    const data = await s3Client.send(new ListObjectsV2Command(listParams));
+
+    if (!data.Contents || data.Contents.length === 0) {
+      return null;
+    }
+
+    const key = data.Contents[0].Key;
+
+    const command = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+    });
+
+    // Create a presigned URL valid for 60 minutes
+    const image = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+
+    return image;
+  } catch (s3Error) {
+    console.error(`Error fetching profile picture for user ${id}:`, s3Error);
+    return null;
+  }
+};
+
 const uploadFile = async (req, res) => {
   if (req.file) {
     const name = req.file.originalname.slice(
@@ -30,7 +63,7 @@ const uploadFile = async (req, res) => {
           size,
           format,
           req.user.id,
-          req.params.projectID,
+          req.params.projectId,
           key
         )
       );
@@ -52,10 +85,12 @@ const uploadFile = async (req, res) => {
 const getProjectFilesList = async (req, res) => {
   try {
     const result = await pool.query(
-      queries.getFiles(req.params.id, req.query.page, req.query.pageSize)
+      queries.getFiles(req.params.projectId, req.query.page, req.query.pageSize)
     );
 
-    const totalFiles = await pool.query(queries.totalFiles(req.params.id));
+    const totalFiles = await pool.query(
+      queries.totalFiles(req.params.projectId)
+    );
 
     res.status(200).send({ body: result.rows, total: totalFiles.rows[0] });
   } catch (error) {
@@ -66,10 +101,16 @@ const getProjectFilesList = async (req, res) => {
 const getProjectAudioFilesList = async (req, res) => {
   try {
     const result = await pool.query(
-      queries.getAudioFiles(req.params.id, req.query.page, req.query.pageSize)
+      queries.getAudioFiles(
+        req.params.projectId,
+        req.query.page,
+        req.query.pageSize
+      )
     );
 
-    const totalFiles = await pool.query(queries.totalAudioFiles(req.params.id));
+    const totalFiles = await pool.query(
+      queries.totalAudioFiles(req.params.projectId)
+    );
 
     res.status(200).send({ body: result.rows, total: totalFiles.rows[0] });
   } catch (error) {
@@ -79,7 +120,9 @@ const getProjectAudioFilesList = async (req, res) => {
 
 const getArrangeFiles = async (req, res) => {
   try {
-    const result = await pool.query(queries.getArrangeFiles(req.params.id));
+    const result = await pool.query(
+      queries.getArrangeFiles(req.params.projectId)
+    );
 
     res.status(200).send({ body: result.rows });
   } catch (error) {
@@ -90,7 +133,7 @@ const getArrangeFiles = async (req, res) => {
 const addToArrangeFile = async (req, res) => {
   try {
     const result = await pool.query(
-      queries.addToArrangeFile(req.params.projectID, req.body.fileID)
+      queries.addToArrangeFile(req.params.projectId, req.body.fileID)
     );
 
     res.status(201).send({ msg: "Added succesfully!" });
@@ -101,7 +144,7 @@ const addToArrangeFile = async (req, res) => {
 
 const getDawAudios = async (req, res) => {
   try {
-    const result = await pool.query(queries.getDawAudio(req.params.id));
+    const result = await pool.query(queries.getDawAudio(req.params.projectId));
 
     res.status(200).send({ body: result.rows });
   } catch (error) {
@@ -111,7 +154,7 @@ const getDawAudios = async (req, res) => {
 
 const addToDawAudio = async (req, res) => {
   try {
-    const projectID = req.params.projectID;
+    const projectID = req.params.projectId;
     const { fileID, X, trackIndex } = req.body;
 
     id = await pool.query(
@@ -129,6 +172,7 @@ const delDawAudio = async (req, res) => {
     await pool.query(queries.deleteDawAudio(req.params.id));
     return res.status(200).send({ msg: "Audio deleted successfully!" });
   } catch (error) {
+    console.log("error");
     res.status(500).send({ error: "Error deleting audio" });
   }
 };
@@ -184,7 +228,7 @@ const getProfilePicture = async (req, res) => {
 
 const getFile = async (req, res) => {
   const bucketName = values.bucketname;
-  const key = [req.params.userID, req.params.projectID, req.params.file].join(
+  const key = [req.params.userID, req.params.projectId, req.params.file].join(
     "/"
   );
 
@@ -206,7 +250,7 @@ const getFile = async (req, res) => {
 
 const deleteFile = async (req, res) => {
   const bucketName = values.bucketname;
-  const key = [req.params.userID, req.params.projectID, req.params.file].join(
+  const key = [req.params.userID, req.params.projectId, req.params.file].join(
     "/"
   );
 
@@ -237,4 +281,5 @@ module.exports = {
   getDawAudios,
   delDawAudio,
   updateDawAudio,
+  getProfileImageGeneral,
 };

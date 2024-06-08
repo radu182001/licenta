@@ -1,10 +1,20 @@
 <div class="card-container daw">
-  <app-daw [dragging]="dragging" [projectId]="projectId"></app-daw>
+  <app-daw
+    [dragging]="dragging"
+    [projectId]="projectId"
+    [masterRole]="role"
+  ></app-daw>
 </div>
 <div class="card-container audio-list">
   <div class="title">
     <h1>Audio files</h1>
-    <button mat-fab extended class="import-btn" (click)="importAudio()">
+    <button
+      mat-fab
+      extended
+      class="import-btn"
+      (click)="importAudio()"
+      [disabled]="role !== 'admin' && role !== 'manager'"
+    >
       <span> Import </span>
       <mat-icon>publish</mat-icon>
     </button>

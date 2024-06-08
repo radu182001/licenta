@@ -8,9 +8,22 @@
   (mousedown)="onMouseDown($event)"
   (mousemove)="onMouseMove($event)"
   (mouseup)="onMouseUp()"
+  [class.disable]="masterRole !== 'admin' && masterRole !== 'manager'"
 >
-  <div class="left" tabindex="0" (mousedown)="this.resizingLeft = true"></div>
-  <div class="right" tabindex="0" (mousedown)="this.resizingRight = true"></div>
+  <div
+    class="left"
+    tabindex="0"
+    (mousedown)="
+      this.resizingLeft = masterRole === 'admin' || masterRole === 'manager'
+    "
+  ></div>
+  <div
+    class="right"
+    tabindex="0"
+    (mousedown)="
+      this.resizingRight = masterRole === 'admin' || masterRole === 'manager'
+    "
+  ></div>
   <div
     [id]="'waveform' + id"
     class="waveform-container"

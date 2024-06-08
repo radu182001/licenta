@@ -18,6 +18,7 @@ import { FileService } from '../../services/file.service';
 export class DawComponent implements OnInit, AfterViewInit, OnChanges{
   @Input('dragging') dragging: boolean = false;
   @Input('projectId') projectId: number = 0;
+  @Input('masterRole') masterRole!: string;
 
   @ViewChild('container') scrollContainer!: ElementRef;
   @ViewChild('timeMarker') timeMarker!: ElementRef;
@@ -133,7 +134,7 @@ export class DawComponent implements OnInit, AfterViewInit, OnChanges{
   }
 
   deleteAudio(id: number) {
-    this.fileService.deleteDawAudio(id).subscribe((response: any) => {
+    this.fileService.deleteDawAudio(id, this.projectId).subscribe((response: any) => {
       this.tracks.forEach(track => {
         const audioIndex = track.audios.findIndex((audio: any) => audio.id === id);
         if (audioIndex !== -1) {
@@ -228,7 +229,7 @@ export class DawComponent implements OnInit, AfterViewInit, OnChanges{
   saveChanges() {
 
     this.changes.forEach((change: any) => {
-      this.fileService.updateDawAudio(change.id, change.X, change.startTime, change.endTime).subscribe((response) => {
+      this.fileService.updateDawAudio(change.id, this.projectId, change.X, change.startTime, change.endTime).subscribe((response) => {
         console.log("updated");
       });
     });

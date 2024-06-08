@@ -1,5 +1,6 @@
 {
     "jwtPrivateKey": "",
     "s3_accessKeyId": "",
-    "s3_secretAccessKey": ""
+    "s3_secretAccessKey": "",
+    "inviteToken": ""
 }

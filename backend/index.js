@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const config = require("config");
 const cors = require("cors");
+const http = require("http");
+const socket = require("./utils/socketIO");
+const socketIo = require("socket.io");
 
 const users = require("./routes/users");
 const auth = require("./routes/auth");
@@ -19,7 +22,11 @@ if (!config.get("s3_accessKeyId")) {
   process.exit(1);
 }
 if (!config.get("s3_secretAccessKey")) {
-  console.error("FATAL ERROR: jwtPrivateKey is not defined.");
+  console.error("FATAL ERROR: s3_secretAccessKey is not defined.");
+  process.exit(1);
+}
+if (!config.get("inviteToken")) {
+  console.error("FATAL ERROR: inviteToken is not defined.");
   process.exit(1);
 }
 
@@ -32,5 +39,11 @@ app.use("/api/chat", chat);
 app.use("/api/files", files);
 app.use("/api/lyrics", lyrics);
 
+// Create HTTP server
+const server = http.createServer(app);
+
+// open socket
+socket.initialize(server);
+
 const port = 3000;
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Listening on port ${port}`));

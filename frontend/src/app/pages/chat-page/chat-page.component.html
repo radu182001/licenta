@@ -1,0 +1,43 @@
+<div class="card-container">
+  <div class="header">
+    <div class="title">
+      <h2>Group chat</h2>
+      <h3>
+        {{
+          users.length + (users.length > 1 ? " participants" : " participant")
+        }}
+      </h3>
+      <div class="users">
+        <img
+          [src]="
+            user.image ? user.image : '../../assets/profile-placeholder.png'
+          "
+          alt=""
+          *ngFor="let user of users"
+        />
+      </div>
+    </div>
+    <h4 [ngStyle]="{ visibility: typingUser ? 'visible' : 'hidden' }">
+      {{ typingUser + " is typing..." }}
+    </h4>
+  </div>
+  <div class="messages" #messagesContainer>
+    <app-message
+      *ngFor="let msg of messages"
+      [msg]="msg.content"
+      [self]="msg.senderid === payload.id"
+      [username]="msg.username"
+      [time]="msg.timestamp"
+    ></app-message>
+  </div>
+  <div class="text-input">
+    <input
+      type="text"
+      placeholder="Type something..."
+      [(ngModel)]="text"
+      (input)="typing()"
+      (keyup.enter)="sendMessage()"
+    />
+    <mat-icon (click)="sendMessage()">send</mat-icon>
+  </div>
+</div>

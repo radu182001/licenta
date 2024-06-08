@@ -3,17 +3,17 @@
   <div class="project-stats">
     <div class="cell">
       <h2>Admin</h2>
-      <h3>0</h3>
+      <h3>{{ stats.admin ? stats.admin.count : 0 }}</h3>
     </div>
     <div class="divider"></div>
     <div class="cell">
       <h2>Manager</h2>
-      <h3>0</h3>
+      <h3>{{ stats.manager ? stats.manager.count : 0 }}</h3>
     </div>
     <div class="divider"></div>
     <div class="cell">
       <h2>Member</h2>
-      <h3>0</h3>
+      <h3>{{ stats.member ? stats.member.count : 0 }}</h3>
     </div>
   </div>
 </div>

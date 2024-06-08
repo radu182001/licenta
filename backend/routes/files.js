@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const authorize = require("../middleware/authorization");
+const roleMiddleware = require("../middleware/roleMiddleware");
 const upload = require("../middleware/fileUpload");
 
 const filesController = require("../controllers/filesController");
 
 router.post(
-  "/uploadFile/:projectID",
+  "/uploadFile/:projectId",
   authorize,
+  roleMiddleware.manager,
   upload.uploadFile.single("file"),
   filesController.uploadFile
 );
@@ -18,41 +20,75 @@ router.post(
   upload.uploadProfilePicture.single("file")
 );
 
-router.get("/getFilesList/:id", authorize, filesController.getProjectFilesList);
+router.get(
+  "/getFilesList/:projectId",
+  authorize,
+  roleMiddleware.member,
+  filesController.getProjectFilesList
+);
 
 router.get(
-  "/getAudioFilesList/:id",
+  "/getAudioFilesList/:projectId",
   authorize,
+  roleMiddleware.member,
   filesController.getProjectAudioFilesList
 );
 
-router.get("/getArrangeFiles/:id", authorize, filesController.getArrangeFiles);
+router.get(
+  "/getArrangeFiles/:projectId",
+  authorize,
+  roleMiddleware.member,
+  filesController.getArrangeFiles
+);
 
 router.post(
-  "/addToArrangeFile/:projectID",
+  "/addToArrangeFile/:projectId",
   authorize,
+  roleMiddleware.manager,
   filesController.addToArrangeFile
 );
 
-router.get("/getDawAudios/:id", authorize, filesController.getDawAudios);
+router.get(
+  "/getDawAudios/:projectId",
+  authorize,
+  roleMiddleware.member,
+  filesController.getDawAudios
+);
 
 router.post(
-  "/addToDawAudio/:projectID",
+  "/addToDawAudio/:projectId",
   authorize,
+  roleMiddleware.manager,
   filesController.addToDawAudio
 );
 
-router.delete("/deleteDawAudio/:id", authorize, filesController.delDawAudio);
+router.delete(
+  "/deleteDawAudio/:projectId/:id",
+  authorize,
+  roleMiddleware.manager,
+  filesController.delDawAudio
+);
 
-router.put("/updateDawAudio/:id", authorize, filesController.updateDawAudio);
+router.put(
+  "/updateDawAudio/:projectId/:id",
+  authorize,
+  roleMiddleware.manager,
+  filesController.updateDawAudio
+);
 
 router.get("/profile", authorize, filesController.getProfilePicture);
 
-router.get("/:userID/:projectID/:file", authorize, filesController.getFile);
+router.get(
+  "/:userID/:projectId/:file",
+  authorize,
+  roleMiddleware.member,
+  filesController.getFile
+);
 
 router.delete(
-  "/:userID/:projectID/:file",
+  "/:userID/:projectId/:file",
   authorize,
+  roleMiddleware.manager,
   filesController.deleteFile
 );
 

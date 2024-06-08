@@ -32,7 +32,9 @@
     id="appDawDrop"
     (cdkDropListDropped)="onDrop($event)"
     class="drop-zone"
-    [class.active]="dragging"
+    [class.active]="
+      dragging && (masterRole === 'admin' || masterRole === 'manager')
+    "
     [cdkDropListConnectedTo]="['fileDropList']"
   ></div>
 
@@ -65,6 +67,7 @@
         [startTime]="audio.starttime"
         [endTime]="audio.endtime"
         [id]="audio.id"
+        [masterRole]="masterRole"
         (del)="deleteAudio(audio.id)"
         (XChange)="handleXChanges($event, audio.id)"
         (startChange)="handleStartChange($event, audio.id)"

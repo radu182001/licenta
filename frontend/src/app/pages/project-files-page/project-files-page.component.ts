@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DeleteDialogComponent } from '../../components/delete-dialog/delete-dialog.component';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-project-files-page',
@@ -18,6 +19,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 })
 export class ProjectFilesPageComponent implements OnInit{
   projectId: number = 0;
+  role: string = "";
   files: any = [];
 
   // paging values
@@ -25,7 +27,7 @@ export class ProjectFilesPageComponent implements OnInit{
   pageIndex: number = 0;
   pageSize: number = 5;
 
-  constructor(private fileService: FileService, private route: ActivatedRoute, private dialog: MatDialog, private router: Router) {}
+  constructor(private fileService: FileService, private route: ActivatedRoute, private dialog: MatDialog, private router: Router, private projectService: ProjectService) {}
 
   uploadFile(event: Event) {
     const eventTarget = event.target as HTMLInputElement;
@@ -98,6 +100,9 @@ export class ProjectFilesPageComponent implements OnInit{
         console.error("Project ID is not available or invalid");
       } else if (typeof localStorage !== 'undefined') { 
         this.getFiles();
+        this.projectService.getRole(this.projectId).subscribe((response: any) => {
+          this.role = response.role;
+        });
       }
     });
   }

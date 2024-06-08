@@ -1,6 +1,12 @@
 <div class="header">
   <div class="options">
-    <button class="option" [matMenuTriggerFor]="menu">Insert section</button>
+    <button
+      class="option"
+      [matMenuTriggerFor]="menu"
+      [disabled]="role !== 'admin' && role !== 'manager'"
+    >
+      Insert section
+    </button>
     <div class="divider"></div>
     <button class="option" (click)="generatePDF()">Export</button>
   </div>
@@ -21,8 +27,9 @@
 <div
   #textarea
   id="paper"
+  (input)="isSaved = false"
   [innerHTML]="htmlContent"
   [innerText]="innerText"
-  contenteditable="true"
+  [attr.contenteditable]="role === 'admin' || role === 'manager' ? true : false"
   (blur)="updateContent()"
 ></div>

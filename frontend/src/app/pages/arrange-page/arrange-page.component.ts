@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AudioFilesDialogComponent } from '../../components/audio-files-dialog/audio-files-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { FileService } from '../../services/file.service';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-arrange-page',
@@ -19,9 +20,10 @@ import { FileService } from '../../services/file.service';
 export class ArrangePageComponent implements OnInit {
 
   projectId: number = 0;
+  role: string = "";
   dragging: boolean = false;
 
-  constructor(private dialog: MatDialog, private route: ActivatedRoute, private fileService: FileService) {}
+  constructor(private dialog: MatDialog, private route: ActivatedRoute, private fileService: FileService, private projectService: ProjectService) {}
 
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event: MouseEvent) {
@@ -57,6 +59,10 @@ export class ArrangePageComponent implements OnInit {
       this.fileService.getArrangeFiles(this.projectId).subscribe((response: any) => {
         this.audioFiles = response.body;
       })
+     
+      this.projectService.getRole(this.projectId).subscribe((response: any) => {
+        this.role = response.role;
+      });
     }
   }
 

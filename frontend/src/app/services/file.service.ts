@@ -55,12 +55,12 @@ export class FileService {
     return this.webReqService.post(`/api/files/addToDawAudio/${projectID}`, {fileID: fileID, X: X, trackIndex: trackIndex});
   }
 
-  deleteDawAudio(id: number) {
-    return this.webReqService.delete(`/api/files/deleteDawAudio/${id}`);
+  deleteDawAudio(id: number, projectId: number) {
+    return this.webReqService.delete(`/api/files/deleteDawAudio/${projectId}/${id}`);
   }
 
-  updateDawAudio(id: number, x?: number, startTime?: number, endTime?: number) {
-    return this.webReqService.put(`/api/files/updateDawAudio/${id}`, {x: x, startTime: startTime, endTime: endTime});
+  updateDawAudio(id: number, projectId: number, x?: number, startTime?: number, endTime?: number) {
+    return this.webReqService.put(`/api/files/updateDawAudio/${projectId}/${id}`, {x: x, startTime: startTime, endTime: endTime});
   }
 
   downloadFile(key: string) {

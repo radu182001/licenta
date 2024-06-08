@@ -1,0 +1,18 @@
+<div class="user-info">
+  <img [src]="image ? image : '../../assets/profile-placeholder.png'" alt="" />
+  <h3>{{ "@" + username }}</h3>
+</div>
+<button
+  class="role-btn"
+  [matMenuTriggerFor]="menu"
+  [disabled]="role === 'admin' || masterRole !== 'admin'"
+>
+  {{ role }}
+  <mat-icon *ngIf="role !== 'admin' && masterRole === 'admin'"
+    >keyboard_arrow_down</mat-icon
+  >
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="role = 'manager'">manager</button>
+  <button mat-menu-item (click)="role = 'member'">member</button>
+</mat-menu>

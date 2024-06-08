@@ -3,11 +3,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-file',
   standalone: true,
-  imports: [MatIconModule, MatCheckboxModule, MatMenuModule, MatButtonModule],
+  imports: [MatIconModule, MatCheckboxModule, MatMenuModule, MatButtonModule, CommonModule],
   templateUrl: './file.component.html',
   styleUrl: './file.component.scss',
 })
@@ -17,6 +18,7 @@ export class FileComponent implements OnInit{
   @Input('format') format: any;
   @Input('user') user: any;
   @Input('date') timestamp: any;
+  @Input('masterRole') masterRole!: string;
 
   @Output() download = new EventEmitter();
   @Output() delete = new EventEmitter();

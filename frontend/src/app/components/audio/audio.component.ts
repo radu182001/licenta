@@ -18,6 +18,7 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   @Input("startTime") startTime: number = 0;
   @Input("endTime") endTime: number = 0;
   @Input("id") id: number = 0;
+  @Input('masterRole') masterRole!: string;
 
   @Output("del") del = new EventEmitter();
   @Output("XChange") XChange = new EventEmitter();
@@ -67,15 +68,17 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
   }
 
   onMouseDown(event: MouseEvent) {
-    if (!this.resizingLeft && !this.resizingRight) {
-      this.isDragging = true;
-      this.initX = event.clientX;
-    } else if (this.resizingLeft || this.resizingRight) {
-      this.initX = event.clientX;
-    }
+    if (this.masterRole === 'admin' || this.masterRole === 'manager') {
+      if (!this.resizingLeft && !this.resizingRight) {
+        this.isDragging = true;
+        this.initX = event.clientX;
+      } else if (this.resizingLeft || this.resizingRight) {
+        this.initX = event.clientX;
+      }
 
-    window.addEventListener('mousemove', this.onMouseMove);
-    window.addEventListener('mouseup', this.onMouseUp);
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('mouseup', this.onMouseUp);
+    }
   }
 
   onMouseMove(event: MouseEvent) {
@@ -204,8 +207,9 @@ export class AudioComponent implements OnInit, AfterViewInit, OnChanges{
 
   // Selection function
   selected() {
-    this.isSelected = true;
-    console.log(this.X)
+    if (this.masterRole === 'admin' || this.masterRole === 'manager') {
+      this.isSelected = true;
+    }
   }
 
   notSelected() {

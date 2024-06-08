@@ -22,20 +22,35 @@
 }
 
 .card-container {
-    flex-direction: row;
+    // flex-direction: row;
     width: 100%;
     height: auto;
     padding: 0.5rem;
-    justify-content: flex-start;
+    // justify-content: flex-start;
     padding-right: 3rem;
+
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.info {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    grid-column: span 4;
+    gap: 1rem;
+    
 }
 
 .created-by {
-    flex: 1
+    // flex: 1
+    justify-self: flex-start;
+    grid-column: span 2;
 }
 
 .last-modified {
     justify-self: flex-end;
+    grid-column: span 2;
 }
 
 .paginator {

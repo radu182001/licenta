@@ -20,4 +20,24 @@ export class ProjectService {
     return this.webService.post("/api/projects", {name: name, description: desc});
   }
 
+  generateInviteToken(id: number) {
+    return this.webService.get(`/api/projects/inviteToken/${id}`);
+  }
+
+  accessInvite(token: string) {
+    return this.webService.post(`/api/projects/invite/${token}`, {});
+  }
+
+  getUsers(projectId: number) {
+    return this.webService.get(`/api/projects/users/${projectId}`);
+  }
+
+  getStats() {
+    return this.webService.get('/api/projects/stats');
+  }
+
+  getRole(projectId: number) {
+    return this.webService.get(`/api/projects/role/${projectId}`);
+  }
+
 }
