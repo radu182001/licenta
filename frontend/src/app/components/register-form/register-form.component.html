@@ -1,38 +1,184 @@
 <h1>Sign up</h1>
-<div class="input-container">
-  <h2>Username</h2>
-  <div class="field-container">
-    <mat-icon class="icon">person_outline</mat-icon>
-    <mat-divider [vertical]="true" class="divider"></mat-divider>
-    <input type="text" class="field" />
+<form #loginForm="ngForm" (ngSubmit)="register(loginForm)" class="form">
+  <div class="wrapper">
+    <div class="left">
+      <div class="input-container">
+        <h2>Username</h2>
+        <div class="field-container">
+          <mat-icon class="icon">person_outline</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="username"
+            [(ngModel)]="username"
+            #usernameCtrl="ngModel"
+            required
+            minlength="4"
+            type="text"
+            class="field"
+            placeholder="Username"
+          />
+        </div>
+        <div *ngIf="submitted && usernameCtrl.errors" class="error-message">
+          <div *ngIf="usernameCtrl.errors?.['required']">
+            * Username is required
+          </div>
+          <div *ngIf="usernameCtrl.errors?.['minlength']">
+            * Username must be at least 4 characters
+          </div>
+        </div>
+        <div *ngIf="usernameErr" class="error-message">* Username taken</div>
+      </div>
+
+      <div class="input-container">
+        <h2>Password</h2>
+        <div class="field-container">
+          <mat-icon class="icon">password</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="password"
+            [(ngModel)]="password"
+            #passwordCtrl="ngModel"
+            required
+            minlength="4"
+            class="field"
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="submitted && passwordCtrl.errors" class="error-message">
+          <div *ngIf="passwordCtrl.errors?.['required']">
+            * Password is required
+          </div>
+          <div *ngIf="passwordCtrl.errors?.['minlength']">
+            * Password must be at least 4 characters
+          </div>
+        </div>
+        <div *ngIf="passwordErr" class="error-message">
+          * Passwords don't match
+        </div>
+      </div>
+
+      <div class="input-container">
+        <h2>Confirm password</h2>
+        <div class="field-container">
+          <mat-icon class="icon">password</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="cPassword"
+            [(ngModel)]="cPassword"
+            #cPasswordCtrl="ngModel"
+            required
+            minlength="4"
+            class="field"
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Confirm password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="submitted && cPasswordCtrl.errors" class="error-message">
+          <div *ngIf="cPasswordCtrl.errors?.['required']">
+            * Password is required
+          </div>
+          <div *ngIf="cPasswordCtrl.errors?.['minlength']">
+            * Password must be at least 4 characters
+          </div>
+        </div>
+        <div *ngIf="passwordErr" class="error-message">
+          * Passwords don't match
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="input-container">
+        <h2>Email</h2>
+        <div class="field-container">
+          <mat-icon class="icon">mail_outline</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="email"
+            [(ngModel)]="email"
+            #emailCtrl="ngModel"
+            required
+            email
+            minlength="4"
+            type="email"
+            class="field"
+            placeholder="example@domain.com"
+          />
+        </div>
+        <div *ngIf="submitted && emailCtrl.errors" class="error-message">
+          <div *ngIf="emailCtrl.errors?.['required']">* Email is required</div>
+          <div *ngIf="emailCtrl.errors?.['email']">
+            * Please enter a valid email address
+          </div>
+        </div>
+        <div *ngIf="emailErr" class="error-message">* Email already used</div>
+      </div>
+
+      <div class="input-container">
+        <h2>First name</h2>
+        <div class="field-container">
+          <mat-icon class="icon">badge</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="firstName"
+            [(ngModel)]="firstName"
+            #firstNameCtrl="ngModel"
+            required
+            type="text"
+            class="field"
+            placeholder="First name"
+          />
+        </div>
+        <div *ngIf="submitted && firstNameCtrl.errors" class="error-message">
+          <div *ngIf="firstNameCtrl.errors?.['required']">
+            * First name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <h2>Last name</h2>
+        <div class="field-container">
+          <mat-icon class="icon">badge</mat-icon>
+          <mat-divider [vertical]="true" class="divider"></mat-divider>
+          <input
+            name="lastName"
+            [(ngModel)]="lastName"
+            #lastNameCtrl="ngModel"
+            required
+            type="text"
+            class="field"
+            placeholder="Last name"
+          />
+        </div>
+        <div *ngIf="submitted && lastNameCtrl.errors" class="error-message">
+          <div *ngIf="lastNameCtrl.errors?.['required']">
+            * First name is required
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-<div class="input-container">
-  <h2>Email</h2>
-  <div class="field-container">
-    <mat-icon class="icon">mail_outline</mat-icon>
-    <mat-divider [vertical]="true" class="divider"></mat-divider>
-    <input type="email" class="field" />
-  </div>
-</div>
-<div class="input-container">
-  <h2>Password</h2>
-  <div class="field-container">
-    <mat-icon class="icon">password</mat-icon>
-    <mat-divider [vertical]="true" class="divider"></mat-divider>
-    <input class="field" [type]="hide ? 'password' : 'text'" />
-    <button
-      mat-icon-button
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide"
-    >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
-  </div>
-</div>
-<button class="submit">Create account</button>
+  <button type="submit" class="submit">Create account</button>
+</form>
 <p>
   Already have an account?<span><a (click)="signin()">Log in</a></span>
 </p>

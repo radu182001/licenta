@@ -27,7 +27,7 @@
 <div
   #textarea
   id="paper"
-  (input)="isSaved = false"
+  (input)="write()"
   [innerHTML]="htmlContent"
   [innerText]="innerText"
   [attr.contenteditable]="role === 'admin' || role === 'manager' ? true : false"

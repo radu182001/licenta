@@ -11,4 +11,14 @@ export class LoginService {
   login(username: string, password: string) {
     return this.webReqService.post('/api/auth', {username: username, password: password});
   }
+
+  register(username: string, password: string, email: string, firstName: string, lastName: string) {
+    return this.webReqService.post('/api/users', {
+      username: username,
+      password: password,
+      email: email,
+      firstname: firstName,
+      lastname: lastName 
+    })
+  }
 }

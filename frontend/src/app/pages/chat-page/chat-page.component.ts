@@ -94,7 +94,7 @@ export class ChatPageComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.typingTimeout = setTimeout(() => {
         this.typingUser = '';
       }, 1500); // Hide the typing indicator after 3 seconds
-    })
+    });
   }
 
   typing() {

@@ -6,6 +6,10 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 
 const projectsController = require("../controllers/projectsController");
 
+router.get("/", authorize, projectsController.getProjects);
+
+router.post("/", authorize, projectsController.createProject);
+
 router.post(
   "/invite/:token",
   authorize,
@@ -15,6 +19,8 @@ router.post(
 router.get("/stats", authorize, projectsController.getProjectStats);
 
 router.get("/:id", authorize, projectsController.getProject);
+
+router.get("/name/:projectId", authorize, projectsController.getProjectName);
 
 router.get(
   "/inviteToken/:projectId",
@@ -31,8 +37,11 @@ router.get(
 
 router.get("/role/:projectId", authorize, projectsController.getRole);
 
-router.get("/", authorize, projectsController.getProjects);
-
-router.post("/", authorize, projectsController.createProject);
+router.put(
+  "/changeRoles/:projectId",
+  authorize,
+  roleMiddleware.admin,
+  projectsController.changeRoles
+);
 
 module.exports = router;

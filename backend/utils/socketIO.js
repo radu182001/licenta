@@ -18,8 +18,14 @@ function initialize(server) {
 
     // Listen for typing signals
     socket.on("typing", (data) => {
-      console.log(`typing/${data.chatId}`);
+      //console.log(`typing/${data.chatId}`);
       socket.broadcast.emit(`typing/${data.chatId}`, { userId: data.userId });
+    });
+
+    socket.on("newContent", (data) => {
+      socket.broadcast.emit(`newContent/${data.projectId}`, {
+        content: data.content,
+      });
     });
   });
 }

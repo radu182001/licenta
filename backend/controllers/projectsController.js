@@ -121,6 +121,18 @@ const getProject = async (req, res) => {
   }
 };
 
+const getProjectName = async (req, res) => {
+  try {
+    const project = await pool.query(
+      queries.getProjectName(req.params.projectId)
+    );
+
+    res.status(200).send({ body: project.rows[0] });
+  } catch (error) {
+    return res.status(500).send({ error: error });
+  }
+};
+
 const getUsersInProject = async (req, res) => {
   try {
     const users = await pool.query(
@@ -171,6 +183,21 @@ const getRole = async (req, res) => {
   }
 };
 
+const changeRoles = async (req, res) => {
+  try {
+    console.log(req.body);
+    await pool.query(
+      queries.updateRole(req.body.id, req.params.projectId, req.body.role)
+    );
+
+    console.log("gata");
+
+    res.status(200).send({ msg: "Updated!" });
+  } catch (error) {
+    return res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createProject,
   addNewMember,
@@ -180,4 +207,6 @@ module.exports = {
   getUsersInProject,
   getProjectStats,
   getRole,
+  changeRoles,
+  getProjectName,
 };

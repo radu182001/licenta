@@ -16,6 +16,10 @@ export class ProjectService {
     return this.webService.get("/api/projects");
   }
 
+  getProjectName(id: number) {
+    return this.webService.get(`/api/projects/name/${id}`);
+  }
+
   createProject(name: string, desc: string) {
     return this.webService.post("/api/projects", {name: name, description: desc});
   }
@@ -38,6 +42,10 @@ export class ProjectService {
 
   getRole(projectId: number) {
     return this.webService.get(`/api/projects/role/${projectId}`);
+  }
+
+  changeRole(id: number, projectId: number, role: string) {
+    return this.webService.put(`/api/projects/changeRoles/${projectId}`, {id: id, role: role});
   }
 
 }

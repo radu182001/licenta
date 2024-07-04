@@ -9,6 +9,9 @@ const getProject = (projectID, userID) =>
   JOIN UserProjects up ON p.ID = up.ProjectID
   WHERE p.ID = ${projectID} AND up.UserID = ${userID}`;
 
+const getProjectName = (projectId) =>
+  `SELECT name FROM Projects WHERE id = ${projectId}`;
+
 const createProject = (userID, name, description) => {
   if (description) {
     return `INSERT INTO Projects (name, description, ownerid) VALUES ('${name}', '${description}', '${userID}') RETURNING id`;
@@ -31,6 +34,9 @@ const getUsersInProject = (id) =>
 const getStats = (userId) =>
   `SELECT role, count(*) from userprojects where userid=${userId} group by role`;
 
+const updateRole = (userId, projectId, role) =>
+  `UPDATE UserProjects SET Role = '${role}' WHERE userid = ${userId} AND projectid = ${projectId}`;
+
 module.exports = {
   getProjectByName,
   createProject,
@@ -40,4 +46,6 @@ module.exports = {
   getProject,
   getUsersInProject,
   getStats,
+  updateRole,
+  getProjectName,
 };

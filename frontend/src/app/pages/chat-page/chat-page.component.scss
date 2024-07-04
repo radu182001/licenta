@@ -81,6 +81,7 @@ img + img {
     height: 100%;
     gap: 0.5rem;
     overflow-y: auto;
+    overflow-x: hidden;
     transition: height 0.2s ease-in;
 }
 

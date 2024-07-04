@@ -39,6 +39,29 @@ export class SettingsPageComponent {
     })
   }
 
+  addChange(e: any) {
+    
+    const index = this.changes.findIndex((c: any) => c.id === e.id);
+
+    if (index >= 0) {
+      this.changes[index].role = e.role;
+    }
+    else {
+      const change = {id: e.id, role: e.role};
+      this.changes.push(change);
+    }
+    console.log(this.changes);
+  }
+
+  saveChanges() {
+    this.changes.forEach((change: any) => {
+      this.projectService.changeRole(change.id, this.projectId, change.role).subscribe((response) => {
+        console.log("updated");
+        this.changes = [];
+      });
+    });
+  }
+
   ngOnInit(): void {
     this.route.parent?.paramMap.subscribe(params => {
       this.projectId = Number(params.get('id'));

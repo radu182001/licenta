@@ -1,41 +1,70 @@
 <h1>Login</h1>
-<div class="input-container">
-  <h2>Username</h2>
-  <div class="field-container">
-    <mat-icon class="icon">person_outline</mat-icon>
-    <mat-divider [vertical]="true" class="divider"></mat-divider>
-    <input
-      [(ngModel)]="username"
-      type="text"
-      class="field"
-      placeholder="Username"
-    />
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)" class="form">
+  <div class="input-container">
+    <h2>Username</h2>
+    <div class="field-container">
+      <mat-icon class="icon">person_outline</mat-icon>
+      <mat-divider [vertical]="true" class="divider"></mat-divider>
+      <input
+        name="username"
+        [(ngModel)]="username"
+        #usernameCtrl="ngModel"
+        required
+        minlength="4"
+        type="text"
+        class="field"
+        placeholder="Username"
+      />
+    </div>
+    <div *ngIf="submitted && usernameCtrl.errors" class="error-message">
+      <div *ngIf="usernameCtrl.errors?.['required']">
+        * Username is required
+      </div>
+      <div *ngIf="usernameCtrl.errors?.['minlength']">
+        * Username must be at least 4 characters
+      </div>
+    </div>
   </div>
-</div>
-<div class="input-container">
-  <h2>Password</h2>
-  <div class="field-container">
-    <mat-icon class="icon">password</mat-icon>
-    <mat-divider [vertical]="true" class="divider"></mat-divider>
-    <input
-      [(ngModel)]="password"
-      class="field"
-      [type]="hide ? 'password' : 'text'"
-      placeholder="Password"
-    />
-    <button
-      mat-icon-button
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide"
-    >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
+  <div class="input-container">
+    <h2>Password</h2>
+    <div class="field-container">
+      <mat-icon class="icon">password</mat-icon>
+      <mat-divider [vertical]="true" class="divider"></mat-divider>
+      <input
+        name="password"
+        [(ngModel)]="password"
+        #passwordCtrl="ngModel"
+        required
+        minlength="4"
+        class="field"
+        [type]="hide ? 'password' : 'text'"
+        placeholder="Password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide"
+      >
+        <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="submitted && passwordCtrl.errors" class="error-message">
+      <div *ngIf="passwordCtrl.errors?.['required']">
+        * Password is required
+      </div>
+      <div *ngIf="passwordCtrl.errors?.['minlength']">
+        * Password must be at least 4 characters
+      </div>
+    </div>
   </div>
-</div>
-<a class="forgot">Forgot password?</a>
-<button class="submit" (click)="login()">Sign in</button>
+  <a class="forgot">Forgot password?</a>
+  <button type="submit" class="submit">Sign in</button>
+  <div *ngIf="submitted" class="error-message">
+    <div *ngIf="error">Incorrect username or password</div>
+  </div>
+</form>
 <p>
   Don't have an account?<span><a (click)="signup()">Sign up</a></span>
 </p>

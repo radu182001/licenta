@@ -9,6 +9,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-lyrics',
@@ -39,7 +40,8 @@ export class LyricsComponent implements OnInit {
     private renderer: Renderer2, 
     private sanitizer: DomSanitizer, 
     private route: ActivatedRoute,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private socketService: SocketService
   ) {}
 
   insertSection(title: string) {
@@ -65,10 +67,24 @@ export class LyricsComponent implements OnInit {
     
   }
 
+  write() {
+    this.isSaved = false;
+    this.socketService.emit("newContent", {projectId: this.projectId, content: this.textarea.nativeElement.innerHTML});
+  }
+
   generatePDF() {
     // Retrieve the text property of the element 
     console.log(this.htmlContent.changingThisBreaksApplicationSecurity)
     this.lyricsService.generatePDF(this.htmlContent.changingThisBreaksApplicationSecurity, 'lyrics.pdf')
+  }
+
+  connect() {
+    this.socketService.connect();
+
+    this.socketService.listen(`newContent/${this.projectId}`).subscribe((data) => {
+      console.log("newContent", data.content);
+      this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(data.content)
+    })
   }
 
   ngOnInit(): void {
@@ -78,7 +94,8 @@ export class LyricsComponent implements OnInit {
         console.error("Project ID is not available or invalid");
       } else if (typeof localStorage !== 'undefined') { 
         this.lyricsService.getLyrics(this.projectId).subscribe((response: any) => {
-          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.content)
+          this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(response.content);
+          this.connect();
         })
 
         this.projectService.getRole(this.projectId).subscribe((response: any) => {

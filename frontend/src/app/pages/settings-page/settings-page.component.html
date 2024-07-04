@@ -34,6 +34,8 @@
         [image]="user.image"
         [role]="user.role"
         [masterRole]="role"
+        [id]="user.id"
+        (role)="addChange($event)"
       ></app-user>
       <mat-divider *ngIf="i < users.length - 1"></mat-divider>
     </ng-container>
@@ -44,6 +46,7 @@
       mat-flat-button
       class="save-btn"
       *ngIf="changes.length && role === 'admin'"
+      (click)="saveChanges()"
     >
       Save
     </button>

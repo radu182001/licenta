@@ -40,14 +40,14 @@ export class InvitePageComponent implements OnInit{
       this.token = params.get('token') || "";
       if (this.token) {
         this.payload = jwtDecode(this.token);
-        //this.projectId = Number(this.payload.projectId);
-        this.projectId = 5;
+        this.projectId = Number(this.payload.projectId);
+        //this.projectId = 5;
         
         if (isNaN(this.projectId)) {
           console.error("Project ID is not available or invalid");
         } else if (typeof localStorage !== 'undefined') { 
           
-          this.projectService.getProject(5).subscribe((response: any) => {
+          this.projectService.getProjectName(this.projectId).subscribe((response: any) => {
             console.log(this.projectId);
             console.log(response);
             this.projectName = response.body.name;

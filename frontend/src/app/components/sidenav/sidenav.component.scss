@@ -23,6 +23,7 @@ mat-drawer {
 
 mat-drawer-content {
     background-color: var(--clr-background);
+    
 }
 
 .nav-list {
@@ -75,25 +76,6 @@ mat-drawer-content {
     transition: max-height 0.2s ease-in;
     overflow-y: auto;
 
-    /* width */
-    -webkit-scrollbar {
-        width: 10px;
-    }
-    
-    /* Track */
-    -webkit-scrollbar-track {
-        background: #f1f1f1;
-    }
-    
-    /* Handle */
-    -webkit-scrollbar-thumb {
-        background: #888;
-    }
-    
-    /* Handle on hover */
-    -webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
 }
 
 .user {

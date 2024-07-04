@@ -4,7 +4,8 @@
     align-items: center;
     justify-content: center;
     width: 19rem;
-    gap: 1.7rem;
+    gap: 2rem;
+    height: 100%;
 }
 
 h1 {
@@ -19,12 +20,23 @@ h2 {
     margin: 0;
 }
 
+.form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 1rem;
+}
+
 .input-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
     width: 100%;
+    height: 100%;
 }
 
 .field {
@@ -111,4 +123,9 @@ span {
 p {
     font-weight: 500;
     font-size: 1rem;
+}
+
+.error-message {
+    color: var(--clr-danger);
+    font-size: var(--font-tiny);
 }

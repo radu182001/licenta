@@ -22,24 +22,33 @@ const register = async (req, res) => {
 
   try {
     // check if user already exists
-    const existingUser = await pool.query(
-      queries.getUserByEmail(req.body.email)
-    );
-    if (existingUser.rows.length)
-      return res.status(400).send("User already registered");
+    try {
+      const existingUser = await pool.query(
+        queries.getUserByEmail(req.body.email)
+      );
+      if (existingUser.rows.length)
+        return res.status(400).send({ emailErr: "email" });
+    } catch (error) {
+      res.status(500);
+    }
+
     // check if username is taken
     const existingUsername = await pool.query(
       queries.getUserByUsername(req.body.username)
     );
     if (existingUsername.rows.length)
-      return res.status(400).send("Username already taken");
+      return res.status(400).send({ usernameErr: "username" });
     // hash password
     const salt = await bcrypt.genSalt(5);
     const password = await bcrypt.hash(req.body.password, salt);
+
+    console.log(email, password, username, firstname, lastname);
     // create user
     const user = await pool.query(
       queries.addUser(email, username, password, firstname, lastname)
     );
+
+    console.log("created");
 
     // create jwt token
     const token = jwt.sign(
@@ -52,7 +61,7 @@ const register = async (req, res) => {
     res
       .status(201)
       .header("x-token", token)
-      .send({ msg: "User registered successfully!" });
+      .send({ msg: "User registered successfully!", token: token });
   } catch (error) {
     return res.status(500).send({ error: error });
   }
