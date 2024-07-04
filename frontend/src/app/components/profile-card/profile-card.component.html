@@ -2,9 +2,15 @@
   <div class="heading">
     <div class="img-container unselectable">
       <img [src]="profilePath" alt="profile img" class="profile-img" />
-      <button mat-icon-button>
+      <button mat-icon-button (click)="fileInput.click()">
         <mat-icon>upload</mat-icon>
       </button>
+      <input
+        type="file"
+        #fileInput
+        style="display: none"
+        (change)="uploadFile($event)"
+      />
     </div>
     <div class="profile-info">
       <h1>{{ fullname }}</h1>

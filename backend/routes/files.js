@@ -6,18 +6,21 @@ const upload = require("../middleware/fileUpload");
 
 const filesController = require("../controllers/filesController");
 
+router.get("/profile", authorize, filesController.getProfilePicture);
+
+router.post(
+  "/uploadProfile",
+  authorize,
+  upload.uploadProfilePicture.single("file"),
+  filesController.uploadProfile
+);
+
 router.post(
   "/uploadFile/:projectId",
   authorize,
   roleMiddleware.manager,
   upload.uploadFile.single("file"),
   filesController.uploadFile
-);
-
-router.post(
-  "/uploadProfile",
-  authorize,
-  upload.uploadProfilePicture.single("file")
 );
 
 router.get(
@@ -75,8 +78,6 @@ router.put(
   roleMiddleware.manager,
   filesController.updateDawAudio
 );
-
-router.get("/profile", authorize, filesController.getProfilePicture);
 
 router.get(
   "/:userID/:projectId/:file",

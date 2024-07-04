@@ -16,6 +16,13 @@ export class FileService {
     return this.webReqService.post(`/api/files/uploadFile/${projectID}`, formData);
   }
 
+  uploadProfile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);  // 'file' is the key that Multer is looking for
+
+    return this.webReqService.post('/api/files/uploadProfile', formData);
+  }
+
   getFilesList(projectID: number, params?: any) {
     let httpParams = new HttpParams();
     if (params) {

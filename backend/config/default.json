@@ -2,5 +2,7 @@
     "jwtPrivateKey": "",
     "s3_accessKeyId": "",
     "s3_secretAccessKey": "",
-    "inviteToken": ""
+    "inviteToken": "",
+    "db_host": "",
+    "db_password": ""
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ProfileCardComponent } from '../../components/profile-card/profile-card.component';
 import { ProjectsProfileCardComponent } from '../../components/projects-profile-card/projects-profile-card.component';
 import { ContactInfoComponent } from '../../components/contact-info/contact-info.component';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-profile-page',

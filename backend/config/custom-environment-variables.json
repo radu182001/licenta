@@ -2,5 +2,7 @@
     "jwtPrivateKey": "kulu_jwtPrivateKey",
     "s3_accessKeyId": "kulu_s3_accessKeyId",
     "s3_secretAccessKey": "kulu_s3_secretAccessKey",
-    "inviteToken": "kulu_inviteToken"
+    "inviteToken": "kulu_inviteToken",
+    "db_host": "kulu_db_host",
+    "db_password": "kulu_db_password"
 }

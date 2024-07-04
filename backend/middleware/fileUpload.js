@@ -13,7 +13,7 @@ const uploadFile = multer({
     key: function (req, file, cb) {
       cb(
         null,
-        `${req.user.id}/${req.params.projectID}/${Date.now().toString()}-${
+        `${req.user.id}/${req.params.projectId}/${Date.now().toString()}-${
           file.originalname
         }`
       );
@@ -30,10 +30,7 @@ const uploadProfilePicture = multer({
       cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-      cb(
-        null,
-        `${req.user.id}/profile/${Date.now().toString()}-${file.originalname}`
-      );
+      cb(null, `${req.user.id}/profile/profile`);
     },
   }),
 });

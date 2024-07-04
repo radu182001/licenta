@@ -3,6 +3,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../services/user.service';
 import { ProjectService } from '../../services/project.service';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-profile-card',
@@ -17,7 +18,19 @@ export class ProfileCardComponent implements OnInit{
 
   profilePath: string = "../../../assets/profile-placeholder.png"
 
-  constructor(private userService: UserService, private projectService: ProjectService) {}
+  constructor(private userService: UserService, private fileService: FileService) {}
+
+
+  uploadFile(event: Event) {
+    const eventTarget = event.target as HTMLInputElement;
+    let file = eventTarget.files? eventTarget.files[0] : null;
+
+    if (file) {
+      this.fileService.uploadProfile(file).subscribe((response: any) => {
+        location.reload();
+      });
+    }
+  }
 
   ngOnInit(): void {
     if (typeof localStorage !== 'undefined') {

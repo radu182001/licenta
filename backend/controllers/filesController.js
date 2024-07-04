@@ -82,6 +82,10 @@ const uploadFile = async (req, res) => {
   }
 };
 
+const uploadProfile = async (req, res) => {
+  res.status(201).send({ msg: "Uploaded!" });
+};
+
 const getProjectFilesList = async (req, res) => {
   try {
     const result = await pool.query(
@@ -282,4 +286,5 @@ module.exports = {
   delDawAudio,
   updateDawAudio,
   getProfileImageGeneral,
+  uploadProfile,
 };
